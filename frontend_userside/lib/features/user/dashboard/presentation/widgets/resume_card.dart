@@ -367,7 +367,7 @@ class ResumeCard extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
+
           // Action Buttons
           Padding(
             padding: const EdgeInsets.only(left: 18, right: 18, bottom: 16),

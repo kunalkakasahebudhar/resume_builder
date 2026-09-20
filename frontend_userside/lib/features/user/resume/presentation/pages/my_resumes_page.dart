@@ -108,9 +108,12 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
 
     return UserLayout(
       currentRoute: '/resumes',
-      child: Padding(
-        padding: const EdgeInsets.all(28),
-        child: Column(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final padding = constraints.maxWidth < 600 ? 16.0 : 28.0;
+          return Padding(
+            padding: EdgeInsets.all(padding),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header Row
@@ -304,7 +307,7 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 380,
-                            mainAxisExtent: 210,
+                            mainAxisExtent: 240,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                           ),
@@ -357,7 +360,9 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
                     ),
             ),
           ],
-        ),
+          ),
+        );
+        },
       ),
     );
   }

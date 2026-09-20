@@ -27,16 +27,19 @@ class UserDashboardPage extends ConsumerWidget {
       currentRoute: '/dashboard',
       child: resumesState.isLoading
           ? const AppLoader(message: 'Loading dashboard...')
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(28),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WelcomeHeader(
-                    userName: user?.fullName ?? 'Alex Morgan',
-                    onCreateResume: () => context.push('/resumes/new'),
-                    onSelectTemplate: () => context.push('/templates'),
-                  ),
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final padding = constraints.maxWidth < 600 ? 16.0 : 28.0;
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      WelcomeHeader(
+                        userName: user?.fullName ?? 'Alex Morgan',
+                        onCreateResume: () => context.push('/resumes/new'),
+                        onSelectTemplate: () => context.push('/templates'),
+                      ),
                   const SizedBox(height: 28),
                   // Stats Grid
                   LayoutBuilder(
@@ -111,95 +114,192 @@ class UserDashboardPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 28),
                   // Resume Health & ATS Engine Insights Banner
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: isDark
-                            ? const Color(0xFF334155)
-                            : const Color(0xFFE2E8F0),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: const Color(
-                              0xFF10B981,
-                            ).withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            Icons.verified_rounded,
-                            color: Color(0xFF10B981),
-                            size: 24,
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isWide = constraints.maxWidth > 560;
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF1E293B)
+                              : const Color(0xFFF8FAFC),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: isDark
+                                ? const Color(0xFF334155)
+                                : const Color(0xFFE2E8F0),
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'ATS Compatibility Health: Optimal (92/100)',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  color: isDark
-                                      ? Colors.white
-                                      : const Color(0xFF0F172A),
-                                ),
+                        child: isWide
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 44,
+                                    height: 44,
+                                    decoration: BoxDecoration(
+                                      color: const Color(
+                                        0xFF10B981,
+                                      ).withValues(alpha: 0.12),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.verified_rounded,
+                                      color: Color(0xFF10B981),
+                                      size: 24,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'ATS Compatibility Health: Optimal (92/100)',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14,
+                                            color: isDark
+                                                ? Colors.white
+                                                : const Color(0xFF0F172A),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        Text(
+                                          'All active templates conform to standard single-column text flows, parseable typography, and standard ISO headings.',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: isDark
+                                                ? const Color(0xFF94A3B8)
+                                                : const Color(0xFF64748B),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  OutlinedButton.icon(
+                                    onPressed: () {
+                                      if (resumesState.resumes.isNotEmpty) {
+                                        ref
+                                            .read(activeResumeProvider.notifier)
+                                            .setResume(
+                                              resumesState.resumes.first,
+                                            );
+                                        context.push('/ats');
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.analytics_outlined,
+                                      size: 16,
+                                    ),
+                                    label: const Text('View ATS Report'),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: const Color(0xFF4F46E5),
+                                      side: const BorderSide(
+                                        color: Color(0xFF4F46E5),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      textStyle: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 36,
+                                        height: 36,
+                                        decoration: BoxDecoration(
+                                          color: const Color(
+                                            0xFF10B981,
+                                          ).withValues(alpha: 0.12),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(
+                                          Icons.verified_rounded,
+                                          color: Color(0xFF10B981),
+                                          size: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          'ATS Compatibility Health: Optimal (92/100)',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 13,
+                                            color: isDark
+                                                ? Colors.white
+                                                : const Color(0xFF0F172A),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'All active templates conform to standard single-column text flows, parseable typography, and standard ISO headings.',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: isDark
+                                          ? const Color(0xFF94A3B8)
+                                          : const Color(0xFF64748B),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  OutlinedButton.icon(
+                                    onPressed: () {
+                                      if (resumesState.resumes.isNotEmpty) {
+                                        ref
+                                            .read(activeResumeProvider.notifier)
+                                            .setResume(
+                                              resumesState.resumes.first,
+                                            );
+                                        context.push('/ats');
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.analytics_outlined,
+                                      size: 16,
+                                    ),
+                                    label: const Text('View ATS Report'),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: const Color(0xFF4F46E5),
+                                      side: const BorderSide(
+                                        color: Color(0xFF4F46E5),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      textStyle: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 3),
-                              Text(
-                                'All active templates conform to standard single-column text flows, parseable typography, and standard ISO headings.',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: isDark
-                                      ? const Color(0xFF94A3B8)
-                                      : const Color(0xFF64748B),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            if (resumesState.resumes.isNotEmpty) {
-                              ref
-                                  .read(activeResumeProvider.notifier)
-                                  .setResume(resumesState.resumes.first);
-                              context.push('/ats');
-                            }
-                          },
-                          icon: const Icon(Icons.analytics_outlined, size: 16),
-                          label: const Text('View ATS Report'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: const Color(0xFF4F46E5),
-                            side: const BorderSide(color: Color(0xFF4F46E5)),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 10,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            textStyle: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 28),
                   // Quick Actions & Recent Resumes
@@ -351,7 +451,9 @@ class UserDashboardPage extends ConsumerWidget {
                   ),
                 ],
               ),
-            ),
+            );
+          },
+        ),
     );
   }
 }
