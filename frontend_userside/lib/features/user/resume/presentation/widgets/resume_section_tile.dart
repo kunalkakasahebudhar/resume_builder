@@ -34,62 +34,65 @@ class ResumeSectionTile extends StatelessWidget {
               : Colors.transparent,
         ),
       ),
-      child: ListTile(
-        dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        leading: Icon(
-          icon,
-          color: isSelected
-              ? const Color(0xFF4F46E5)
-              : (isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
-          size: 19,
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+      child: Material(
+        color: Colors.transparent,
+        child: ListTile(
+          dense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          leading: Icon(
+            icon,
             color: isSelected
-                ? (isDark ? Colors.white : const Color(0xFF4F46E5))
-                : (isDark ? const Color(0xFFCBD5E1) : const Color(0xFF334155)),
+                ? const Color(0xFF4F46E5)
+                : (isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
+            size: 19,
           ),
-        ),
-        trailing: itemCount > 0
-            ? Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0xFF4F46E5)
-                      : (isDark
-                            ? const Color(0xFF334155)
-                            : const Color(0xFFE2E8F0)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  '$itemCount',
-                  style: TextStyle(
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              color: isSelected
+                  ? (isDark ? Colors.white : const Color(0xFF4F46E5))
+                  : (isDark ? const Color(0xFFCBD5E1) : const Color(0xFF334155)),
+            ),
+          ),
+          trailing: itemCount > 0
+              ? Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  decoration: BoxDecoration(
                     color: isSelected
-                        ? Colors.white
+                        ? const Color(0xFF4F46E5)
                         : (isDark
-                              ? const Color(0xFFCBD5E1)
-                              : const Color(0xFF475569)),
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
+                              ? const Color(0xFF334155)
+                              : const Color(0xFFE2E8F0)),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ),
-              )
-            : (isSelected
-                  ? Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF4F46E5),
-                        shape: BoxShape.circle,
-                      ),
-                    )
-                  : null),
-        onTap: onTap,
+                  child: Text(
+                    '$itemCount',
+                    style: TextStyle(
+                      color: isSelected
+                          ? Colors.white
+                          : (isDark
+                                ? const Color(0xFFCBD5E1)
+                                : const Color(0xFF475569)),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
+              : (isSelected
+                    ? Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF4F46E5),
+                          shape: BoxShape.circle,
+                        ),
+                      )
+                    : null),
+          onTap: onTap,
+        ),
       ),
     );
   }

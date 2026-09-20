@@ -53,6 +53,7 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       if (widget.resumeId != null && widget.resumeId != 'new') {
         ref.read(activeResumeProvider.notifier).loadResume(widget.resumeId!);
       } else {
@@ -132,9 +133,9 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
     final isDesktop = ResponsiveUtils.isDesktop(context);
 
     if (resume == null) {
-      return const UserLayout(
-        currentRoute: '/resumes',
-        child: AppLoader(message: 'Initializing Resume Builder...'),
+      return UserLayout(
+        currentRoute: widget.resumeId == 'new' ? '/resumes/new' : '/resumes',
+        child: const AppLoader(message: 'Initializing Resume Builder...'),
       );
     }
 
@@ -144,7 +145,7 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
         : const Color(0xFFF59E0B);
 
     return UserLayout(
-      currentRoute: '/resumes',
+      currentRoute: widget.resumeId == 'new' ? '/resumes/new' : '/resumes',
       child: Column(
         children: [
           // Builder Top Action Bar
