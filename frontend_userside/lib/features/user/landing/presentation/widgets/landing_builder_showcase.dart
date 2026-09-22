@@ -12,56 +12,56 @@ class LandingBuilderShowcase extends StatelessWidget {
     final builderSections = [
       _BuilderSectionItem(
         icon: Icons.person_rounded,
-        title: 'Personal Info & Links',
-        description: 'Clean header with LinkedIn, GitHub, Portfolio, Phone, and City/Country.',
+        title: 'Personal Info & Contact',
+        description: 'Clean header stream with LinkedIn, GitHub, Portfolio, Email, and City/Country without parser-breaking tables.',
         color: const Color(0xFF4F46E5),
       ),
       _BuilderSectionItem(
         icon: Icons.auto_awesome_rounded,
         title: 'AI Executive Summary',
-        description: 'Craft high-impact professional summaries tailored for your target seniority.',
+        description: 'Generate high-impact professional summaries tailored for your target seniority and specialization.',
         color: const Color(0xFF8B5CF6),
       ),
       _BuilderSectionItem(
         icon: Icons.work_history_rounded,
-        title: 'Work Experience & Impact',
-        description: 'Quantified accomplishments with strong action verbs and metric suggestions.',
+        title: 'Work Experience & STAR',
+        description: 'Quantified accomplishments with strong action verbs and metric suggestions (e.g. "Reduced latency by 42%").',
         color: const Color(0xFF06B6D4),
       ),
       _BuilderSectionItem(
         icon: Icons.school_rounded,
         title: 'Education & Academics',
-        description: 'Degrees, majors, GPA honors, relevant coursework, and university details.',
+        description: 'Degrees, majors, GPA honors, relevant coursework, and university graduation dates with standard ISO formatting.',
         color: const Color(0xFF10B981),
       ),
       _BuilderSectionItem(
         icon: Icons.bolt_rounded,
         title: 'Categorized Skills Matrix',
-        description: 'Organize by Languages, Frameworks, Cloud/DevOps, and Core competencies.',
+        description: 'Categorize by Languages, Frameworks, Cloud/DevOps, and Core competencies for instant keyword extraction.',
         color: const Color(0xFFF59E0B),
       ),
       _BuilderSectionItem(
         icon: Icons.code_rounded,
         title: 'Projects & Repositories',
-        description: 'Showcase live links, open-source repos, architectural tech stacks, and results.',
+        description: 'Showcase live URLs, open-source repos, architectural tech stacks, and quantifiable business outcomes.',
         color: const Color(0xFFEC4899),
       ),
       _BuilderSectionItem(
         icon: Icons.verified_user_rounded,
-        title: 'Certifications & Licenses',
-        description: 'Add AWS, Azure, GCP, PMP, or Scrums with credential verification links.',
+        title: 'Certifications & Credentials',
+        description: 'Add AWS, Azure, GCP, PMP, or Scrums with credential IDs and direct verification URLs.',
         color: const Color(0xFF3B82F6),
       ),
       _BuilderSectionItem(
         icon: Icons.emoji_events_rounded,
-        title: 'Achievements & Awards',
-        description: 'Highlight hackathons, patents, competitive ranks, and enterprise honors.',
+        title: 'Key Achievements & Awards',
+        description: 'Highlight competitive programming ranks, hackathon victories, patents, and enterprise excellence honors.',
         color: const Color(0xFFF97316),
       ),
       _BuilderSectionItem(
         icon: Icons.translate_rounded,
         title: 'Languages & Fluency',
-        description: 'List languages with standardized proficiency levels (Native, Fluent, Professional).',
+        description: 'Standardized proficiency ratings (Native, Full Professional, Working) recognized by international ATS scanners.',
         color: const Color(0xFF14B8A6),
       ),
     ];
@@ -69,13 +69,13 @@ class LandingBuilderShowcase extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: isDark ? const Color(0xFF0B0F19) : const Color(0xFFF8FAFC),
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 88, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1280),
           child: Column(
             children: [
-              // Section Tag
+              // Section Badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class LandingBuilderShowcase extends StatelessWidget {
 
               // Title
               Text(
-                'Complete 9-Section Modular Workflow',
+                'Complete 9-Section Guided Workflow',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
@@ -112,9 +112,9 @@ class LandingBuilderShowcase extends StatelessWidget {
 
               // Subtitle
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 700),
+                constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
-                  'Build, rearrange, and optimize every section of your resume with guided fields, real-time validations, and zero guesswork.',
+                  'Build, rearrange, and optimize every section of your resume with guided inputs, real-time validations, and zero guesswork.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -125,7 +125,7 @@ class LandingBuilderShowcase extends StatelessWidget {
               ),
               const SizedBox(height: 48),
 
-              // 9-Grid Layout
+              // 9-Grid Layout with Standardized 16px/8px Rhythm
               LayoutBuilder(
                 builder: (context, constraints) {
                   final isDesktop = constraints.maxWidth > 960;
@@ -152,7 +152,7 @@ class LandingBuilderShowcase extends StatelessWidget {
 
               const SizedBox(height: 48),
 
-              // Fast Importer Banner Callout
+              // 1-Click Fast Importer Callout Banner
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -168,7 +168,7 @@ class LandingBuilderShowcase extends StatelessWidget {
                 ),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final isNarrow = constraints.maxWidth < 700;
+                    final isNarrow = constraints.maxWidth < 720;
 
                     final content = Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,6 +203,7 @@ class LandingBuilderShowcase extends StatelessWidget {
                           'Use our 1-Click Fast Importer to paste plain text or JSON. We automatically parse your work experience, education, and skills in seconds.',
                           style: TextStyle(
                             fontSize: 13,
+                            height: 1.45,
                             color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
                           ),
                         ),
@@ -216,7 +217,7 @@ class LandingBuilderShowcase extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4F46E5),
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -257,7 +258,7 @@ class LandingBuilderShowcase extends StatelessWidget {
 
   Widget _buildSectionCard(BuildContext context, _BuilderSectionItem item, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF131B2E) : Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -277,6 +278,7 @@ class LandingBuilderShowcase extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 1. Icon Container
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -285,7 +287,9 @@ class LandingBuilderShowcase extends StatelessWidget {
             ),
             child: Icon(item.icon, color: item.color, size: 22),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 16), // Strict 16px spatial step
+
+          // 2. Title
           Text(
             item.title,
             style: TextStyle(
@@ -294,7 +298,9 @@ class LandingBuilderShowcase extends StatelessWidget {
               color: isDark ? Colors.white : const Color(0xFF0F172A),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 8), // Strict 8px spatial step
+
+          // 3. Description
           Text(
             item.description,
             style: TextStyle(

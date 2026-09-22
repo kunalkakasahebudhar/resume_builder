@@ -10,34 +10,29 @@ class LandingFaqSection extends StatefulWidget {
 class _LandingFaqSectionState extends State<LandingFaqSection> {
   final List<_FaqItem> _faqs = [
     _FaqItem(
-      question: 'What is an ATS (Applicant Tracking System) and why does it matter?',
+      question: 'Will this actually pass Workday, Taleo, and Greenhouse filters?',
       answer:
-          'Over 98% of Fortune 500 companies use ATS software (such as Workday, Greenhouse, Taleo, and Lever) to automatically scan, parse, and filter incoming resumes before a human recruiter ever sees them. If your resume contains complex graphics, multi-column tables, or non-standard headers, the parser will fail and automatically discard your application. ResumeForge ensures 100% parseable text structures.',
+          'Yes. ATS rejection happens when resumes use columns, tables, text boxes, or non-standard fonts that parser bots cannot read. Every ResumeForge template uses single-column text streams and standard ISO section headers (Experience, Education, Skills) tested against standard parser specifications.',
     ),
     _FaqItem(
-      question: 'Are all 11+ templates guaranteed to be ATS compliant?',
+      question: 'Do I have to pay or enter a credit card to download my PDF?',
       answer:
-          'Yes! Every template in ResumeForge is strictly designed with single-column layouts, standard ISO section headings (Experience, Education, Skills, Projects), parseable dates, and recruiter-tested typography. No unreadable sidebars or broken table columns.',
+          'No. You can build, customize, score, and download your high-resolution ATS-formatted PDF without paywalls or hidden watermark traps.',
     ),
     _FaqItem(
-      question: 'Can I export pixel-perfect PDFs with no watermarks?',
+      question: 'Can I match my resume against a specific job posting?',
       answer:
-          'Absolutely. All resume exports generate standard vector PDF files with selectable, searchable text, crisp fonts, and zero watermarks. They are ready for immediate upload to company job portals.',
-    ),
-    _FaqItem(
-      question: 'How does the Job Description (JD) Keyword Matcher work?',
-      answer:
-          'Simply paste any job description into the JD Matcher tool. Our engine parses the hard skills, frameworks, cloud tools, and qualifications required for that role and compares them with your resume. It gives you a match percentage and highlights missing keywords so you can weave them into your experience bullets.',
+          'Yes. Paste the Job Description into the built-in JD Matcher. It instantly checks your tech stack and experience against the requirements, flags missing keywords, and shows you where to add them.',
     ),
     _FaqItem(
       question: 'Will I lose my entered data if I switch templates?',
       answer:
-          'Not at all! Your resume data (experience, education, skills, achievements) is saved independently of the presentation template. You can switch between Harvard Classic, FAANG Engineer Pro, Modern Minimalist, and 1-Page Compact instantly with 1-click and full data preservation.',
+          'Not at all. Your resume data (experience, education, skills, achievements) is saved independently of the presentation template. You can switch between Harvard Classic, FAANG Engineer Pro, Modern Minimalist, and 1-Page Compact instantly with 1-click and full data preservation.',
     ),
     _FaqItem(
-      question: 'What are the AI Cover Letter and Interview Prep tools?',
+      question: 'How do the AI Cover Letter and Interview STAR tools work?',
       answer:
-          'Our AI Career Supercharge suite includes an AI Cover Letter generator that writes role-tailored letters matching your resume experience in seconds, and an Interview STAR Kit that predicts behavioral and technical questions with structured Situation-Task-Action-Result answers.',
+          'Our AI Career Suite generates role-tailored cover letters in seconds matched to your exact resume experience, and predicts technical and behavioral interview questions with structured Situation-Task-Action-Result (STAR) answer frameworks.',
     ),
   ];
 
@@ -51,7 +46,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
     return Container(
       width: double.infinity,
       color: isDark ? const Color(0xFF070B14) : Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 88, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -91,18 +86,21 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
               const SizedBox(height: 14),
 
               // Subtitle
-              Text(
-                'Everything you need to know about ATS scoring, templates, AI tools, and PDF generation.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  height: 1.5,
-                  color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 640),
+                child: Text(
+                  'Everything you need to know about ATS scoring, single-column templates, AI tools, and free vector PDF exports.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.5,
+                    color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                  ),
                 ),
               ),
               const SizedBox(height: 48),
 
-              // Accordion List
+              // Accordion List with 48px touch targets
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -133,7 +131,7 @@ class _LandingFaqSectionState extends State<LandingFaqSection> {
                         },
                         borderRadius: BorderRadius.circular(14),
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

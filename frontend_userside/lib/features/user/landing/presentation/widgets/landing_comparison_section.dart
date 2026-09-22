@@ -11,46 +11,40 @@ class LandingComparisonSection extends StatelessWidget {
     final comparisonItems = [
       _ComparisonRow(
         feature: 'ATS Parsing Accuracy',
-        resumeForge: '98.4% Guaranteed Single-Column Text Flow',
-        traditional: 'Fails in 75% of Taleo/Workday parser scans',
-        isHighlight: true,
+        resumeForge: '100% Single-Column Layouts (Zero parser drops)',
+        traditional: 'Fails in 75% of Taleo & Workday parser scans',
       ),
       _ComparisonRow(
-        feature: 'Real-Time ATS Health Score',
-        resumeForge: 'Instant 100-Point score with 1-click recommendations',
-        traditional: 'Zero scoring or ATS guidance',
-        isHighlight: false,
+        feature: 'Live ATS 100-Point Score',
+        resumeForge: 'Real-time score breakdown with 1-click recommendations',
+        traditional: 'Zero scoring feedback or ATS guidance',
       ),
       _ComparisonRow(
         feature: 'Job Description Matcher',
-        resumeForge: 'Scan any JD & highlight missing critical keywords',
-        traditional: 'Manual guessing and keyword placement',
-        isHighlight: false,
+        resumeForge: 'Scan any JD & highlight missing critical tech stack keywords',
+        traditional: 'Manual guesswork and trial-and-error placement',
       ),
       _ComparisonRow(
         feature: 'STAR Bullet Optimization',
-        resumeForge: 'AI action-verb & quantified metric generator',
-        traditional: 'Generic lorem-ipsum dummy text',
-        isHighlight: false,
+        resumeForge: 'AI action-verb & quantified metric generator (STAR method)',
+        traditional: 'Generic lorem-ipsum dummy descriptions',
       ),
       _ComparisonRow(
         feature: 'PDF Export Integrity',
-        resumeForge: 'Selectable text, ISO typography, pixel-perfect print',
-        traditional: 'Bloated canvas image or shifted margins',
-        isHighlight: false,
+        resumeForge: 'Clean vector PDF with searchable text and zero watermarks',
+        traditional: 'Bloated canvas images with unparseable text blocks',
       ),
       _ComparisonRow(
-        feature: 'All-in-One Career Toolkit',
+        feature: 'All-in-One Career Suite',
         resumeForge: 'Cover Letter + STAR Interview Q&A + Salary Benchmarks',
         traditional: 'Basic static document editor only',
-        isHighlight: false,
       ),
     ];
 
     return Container(
       width: double.infinity,
       color: isDark ? const Color(0xFF0B0F19) : const Color(0xFFF8FAFC),
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 88, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1100),
@@ -60,16 +54,16 @@ class LandingComparisonSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEC4899).withValues(alpha: 0.12),
+                  color: const Color(0xFF4F46E5).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFFEC4899).withValues(alpha: 0.3)),
+                  border: Border.all(color: const Color(0xFF4F46E5).withValues(alpha: 0.3)),
                 ),
                 child: const Text(
                   'WHY RESUMEFORGE?',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFFEC4899),
+                    color: Color(0xFF4F46E5),
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -93,7 +87,7 @@ class LandingComparisonSection extends StatelessWidget {
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
-                  'Most online templates look pretty to the human eye but get instantly rejected by recruiting software. See why ResumeForge is different.',
+                  'Most online templates look pretty to the human eye but get discarded by recruiting software. See how ResumeForge guarantees parseability.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -104,7 +98,7 @@ class LandingComparisonSection extends StatelessWidget {
               ),
               const SizedBox(height: 48),
 
-              // Comparison Table Container
+              // Table Container
               Container(
                 decoration: BoxDecoration(
                   color: isDark ? const Color(0xFF131B2E) : Colors.white,
@@ -157,7 +151,7 @@ class LandingComparisonSection extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
-                                      colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+                                      colors: [Color(0xFF4F46E5), Color(0xFF6366F1)],
                                     ),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
@@ -175,7 +169,7 @@ class LandingComparisonSection extends StatelessWidget {
                           ),
                           const DataColumn(
                             label: Text(
-                              'Traditional / Canva / Word',
+                              'Canva / Word / Generic Editors',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
@@ -264,12 +258,10 @@ class _ComparisonRow {
   final String feature;
   final String resumeForge;
   final String traditional;
-  final bool isHighlight;
 
   _ComparisonRow({
     required this.feature,
     required this.resumeForge,
     required this.traditional,
-    required this.isHighlight,
   });
 }

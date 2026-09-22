@@ -12,7 +12,7 @@ class LandingAiToolsSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: isDark ? const Color(0xFF070B14) : Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 88, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1280),
@@ -23,7 +23,7 @@ class LandingAiToolsSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF8B5CF6), Color(0xFFEC4899)],
+                    colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -63,7 +63,7 @@ class LandingAiToolsSection extends StatelessWidget {
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 720),
                 child: Text(
-                  'More than just a template editor. ResumeForge includes a complete suite of recruiter-grade AI utilities designed to get past automated filters and impress hiring managers.',
+                  'More than just a template editor. ResumeForge includes a complete suite of recruiter-grade AI utilities designed to beat automated filters and impress hiring managers.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -84,9 +84,9 @@ class LandingAiToolsSection extends StatelessWidget {
                 description:
                     'Automated applicant tracking systems reject 75% of resumes due to unreadable tables, missing keywords, and improper section titles. Our ATS engine analyzes every sentence and generates an actionable score breakdown with 1-click fixes.',
                 points: [
-                  'Section Header ISO Compliance Check',
-                  'Action Verb & Metric Impact Density (STAR format)',
-                  'Recruiter Optical Readability & Parsing Simulation',
+                  'Section Header ISO Compliance Check (Experience, Education, Skills)',
+                  'Action Verb & Metric Impact Density (STAR framework)',
+                  'Recruiter Optical Readability & Workday/Greenhouse simulation',
                   'Instant actionable recommendations with live score preview',
                 ],
                 actionLabel: 'Launch ATS Scanner',
@@ -101,7 +101,7 @@ class LandingAiToolsSection extends StatelessWidget {
                 context: context,
                 isDark: isDark,
                 tag: 'MATCHMAKER',
-                tagColor: const Color(0xFF8B5CF6),
+                tagColor: const Color(0xFF4F46E5),
                 title: 'Job Description (JD) Keyword Gap Matcher',
                 description:
                     'Paste any job posting from LinkedIn, Indeed, or Greenhouse. The JD Matcher compares the required tech stack, hard skills, and experience against your resume and highlights exactly what you need to add to rank #1.',
@@ -109,7 +109,7 @@ class LandingAiToolsSection extends StatelessWidget {
                   'Real-time keyword frequency and relevancy percentage',
                   'Detection of missing required vs preferred technologies',
                   'Smart keyword placement suggestions in Experience bullets',
-                  'Tailored match score to optimize before applying',
+                  'Tailored match score to optimize before submitting application',
                 ],
                 actionLabel: 'Open JD Matcher',
                 onAction: () => context.push('/jd-matcher'),
@@ -136,10 +136,10 @@ class LandingAiToolsSection extends StatelessWidget {
                           context: context,
                           isDark: isDark,
                           icon: Icons.edit_document,
-                          color: const Color(0xFF06B6D4),
+                          color: const Color(0xFF4F46E5),
                           title: 'AI Cover Letter Generator',
                           description:
-                              'Generate bespoke, role-specific cover letters matched with your exact resume in 3 clicks. Select tone (Professional, Enthusiastic, Confident).',
+                              'Generate bespoke, role-specific cover letters matched with your exact resume in 3 clicks. Select tone (Professional, Modern, Confident).',
                           actionText: 'Generate Cover Letter',
                           onTap: () => context.push('/cover-letter'),
                         ),
@@ -150,7 +150,7 @@ class LandingAiToolsSection extends StatelessWidget {
                           context: context,
                           isDark: isDark,
                           icon: Icons.psychology_rounded,
-                          color: const Color(0xFF8B5CF6),
+                          color: const Color(0xFF6366F1),
                           title: 'AI Interview STAR Kit',
                           description:
                               'Get predicted technical and behavioral questions tailored directly from your resume projects, with structured STAR answer frameworks.',
@@ -164,7 +164,7 @@ class LandingAiToolsSection extends StatelessWidget {
                           context: context,
                           isDark: isDark,
                           icon: Icons.currency_rupee_rounded,
-                          color: const Color(0xFFF59E0B),
+                          color: const Color(0xFF10B981),
                           title: 'Tech Salary Estimator',
                           description:
                               'Benchmark market compensation data based on your specific tech stack, years of experience, and geographic tier before salary negotiations.',
@@ -328,9 +328,9 @@ class LandingAiToolsSection extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.15 : 0.08),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
+            color: const Color(0xFF10B981).withValues(alpha: isDark ? 0.12 : 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -397,9 +397,9 @@ class LandingAiToolsSection extends StatelessWidget {
           const SizedBox(height: 12),
           _buildScoreBar('Impact & Metrics Density', 0.92, '92%', const Color(0xFF4F46E5), isDark),
           const SizedBox(height: 12),
-          _buildScoreBar('Keyword Coverage', 0.95, '95%', const Color(0xFF8B5CF6), isDark),
+          _buildScoreBar('Keyword Coverage', 0.95, '95%', const Color(0xFF6366F1), isDark),
           const SizedBox(height: 12),
-          _buildScoreBar('Formatting & Single-Column', 1.0, '100%', const Color(0xFF06B6D4), isDark),
+          _buildScoreBar('Formatting & Single-Column', 1.0, '100%', const Color(0xFF10B981), isDark),
           const SizedBox(height: 18),
           Container(
             padding: const EdgeInsets.all(12),
@@ -480,9 +480,9 @@ class LandingAiToolsSection extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5CF6).withValues(alpha: isDark ? 0.15 : 0.08),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
+            color: const Color(0xFF4F46E5).withValues(alpha: isDark ? 0.12 : 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -498,10 +498,10 @@ class LandingAiToolsSection extends StatelessWidget {
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                      color: const Color(0xFF4F46E5).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.document_scanner_rounded, color: Color(0xFF8B5CF6), size: 20),
+                    child: const Icon(Icons.document_scanner_rounded, color: Color(0xFF4F46E5), size: 20),
                   ),
                   const SizedBox(width: 12),
                   Column(
@@ -519,7 +519,7 @@ class LandingAiToolsSection extends StatelessWidget {
                         'Target Role: Staff Software Engineer',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Color(0xFF8B5CF6),
+                          color: Color(0xFF6366F1),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -530,16 +530,16 @@ class LandingAiToolsSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+                  color: const Color(0xFF4F46E5).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF8B5CF6).withValues(alpha: 0.3)),
+                  border: Border.all(color: const Color(0xFF4F46E5).withValues(alpha: 0.3)),
                 ),
                 child: const Text(
                   '88% Match',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF8B5CF6),
+                    color: Color(0xFF4F46E5),
                   ),
                 ),
               ),
@@ -569,12 +569,12 @@ class LandingAiToolsSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          Text(
+          const Text(
             'MISSING HIGH-PRIORITY KEYWORDS (2)',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w800,
-              color: const Color(0xFFEF4444),
+              color: Color(0xFFEF4444),
               letterSpacing: 0.4,
             ),
           ),
@@ -634,7 +634,7 @@ class LandingAiToolsSection extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Container(
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF131B2E) : Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -680,7 +680,7 @@ class LandingAiToolsSection extends StatelessWidget {
               color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
           InkWell(
             onTap: onTap,
             child: Row(

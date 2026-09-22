@@ -28,6 +28,22 @@ class _LandingPageState extends ConsumerState<LandingPage> {
   final GlobalKey _faqKey = GlobalKey();
 
   final ScrollController _scrollController = ScrollController();
+  bool _showStickyMobileCta = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final offset = _scrollController.offset;
+    if (offset > 400 && !_showStickyMobileCta) {
+      setState(() => _showStickyMobileCta = true);
+    } else if (offset <= 400 && _showStickyMobileCta) {
+      setState(() => _showStickyMobileCta = false);
+    }
+  }
 
   void _scrollToKey(GlobalKey key) {
     final context = key.currentContext;
@@ -42,6 +58,7 @@ class _LandingPageState extends ConsumerState<LandingPage> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -51,10 +68,14 @@ class _LandingPageState extends ConsumerState<LandingPage> {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final authState = ref.watch(authProvider);
+    final isMobile = MediaQuery.of(context).size.width < 768;
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF070B14) : Colors.white,
       drawer: _buildMobileDrawer(context, isDark, authState.isAuthenticated),
+      bottomNavigationBar: (isMobile && _showStickyMobileCta)
+          ? _buildStickyBottomBar(context, isDark)
+          : null,
       body: SafeArea(
         top: false,
         child: Column(
@@ -86,7 +107,7 @@ class _LandingPageState extends ConsumerState<LandingPage> {
                       child: const LandingBuilderShowcase(),
                     ),
 
-                    // 3. AI Career Supercharge Suite (ATS Scanner, JD Matcher, Cover Letter, Interview Prep, Salary)
+                    // 3. AI Career Supercharge Suite (ATS Scanner, JD Matcher, Cover Letter, STAR Kit, Salary)
                     Container(
                       key: _aiSuiteKey,
                       child: const LandingAiToolsSection(),
@@ -123,6 +144,61 @@ class _LandingPageState extends ConsumerState<LandingPage> {
                       onTemplatesClick: () => _scrollToKey(_templatesKey),
                       onFaqClick: () => _scrollToKey(_faqKey),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStickyBottomBar(BuildContext context, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: isDark
+            ? const Color(0xFF0F172A).withValues(alpha: 0.96)
+            : Colors.white.withValues(alpha: 0.96),
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 12,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => context.push('/resumes/new'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4F46E5),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Build My Resume Free'),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward_rounded, size: 16),
                   ],
                 ),
               ),
