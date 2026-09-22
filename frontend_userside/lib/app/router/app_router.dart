@@ -8,6 +8,7 @@ import 'package:frontend_userside/features/user/auth/presentation/pages/register
 import 'package:frontend_userside/features/user/auth/presentation/pages/reset_password_page.dart';
 import 'package:frontend_userside/features/user/auth/presentation/providers/auth_provider.dart';
 import 'package:frontend_userside/features/user/dashboard/presentation/pages/user_dashboard_page.dart';
+import 'package:frontend_userside/features/user/landing/presentation/pages/landing_page.dart';
 import 'package:frontend_userside/features/user/pdf/presentation/pages/pdf_preview_page.dart';
 import 'package:frontend_userside/features/user/preview/presentation/pages/resume_preview_page.dart';
 import 'package:frontend_userside/features/user/profile/presentation/pages/profile_page.dart';
@@ -34,7 +35,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: '/dashboard',
+    initialLocation: '/',
     refreshListenable: GoRouterRefreshStream(authNotifier.stream),
     redirect: (BuildContext context, GoRouterState state) {
       if (!authState.isInitialized) {
@@ -50,6 +51,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
 
       final publicRoutes = [
+        '/',
+        '/landing',
         '/login',
         '/register',
         '/forgot-password',
@@ -57,20 +60,33 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ];
 
       final isPublicRoute = publicRoutes.contains(location);
-      final isRoot = location == '/';
 
       if (!isAuth && !isPublicRoute) {
         return '/login';
       }
 
-      if (isAuth && (isPublicRoute || isRoot)) {
+      final authEntryRoutes = [
+        '/login',
+        '/register',
+        '/forgot-password',
+        '/reset-password',
+      ];
+
+      if (isAuth && authEntryRoutes.contains(location)) {
         return '/dashboard';
       }
 
       return null;
     },
     routes: [
-      GoRoute(path: '/', redirect: (context, state) => '/dashboard'),
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const LandingPage(),
+      ),
+      GoRoute(
+        path: '/landing',
+        builder: (context, state) => const LandingPage(),
+      ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
         path: '/register',

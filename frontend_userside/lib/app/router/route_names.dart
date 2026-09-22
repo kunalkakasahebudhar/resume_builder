@@ -1,4 +1,8 @@
 class RouteNames {
+  // Public
+  static const String landing = '/';
+  static const String landingAlt = '/landing';
+
   // Public Auth
   static const String login = '/login';
   static const String register = '/register';
@@ -23,9 +27,13 @@ class RouteNames {
   static const String achievements = '/resumes/:id/achievements';
   static const String languages = '/resumes/:id/languages';
 
-  // Features
+  // Features & AI Tools
   static const String templates = '/templates';
   static const String preview = '/preview';
   static const String ats = '/ats';
   static const String pdf = '/pdf';
+  static const String jdMatcher = '/jd-matcher';
+  static const String coverLetter = '/cover-letter';
+  static const String interviewPrep = '/interview-prep';
+  static const String salaryEstimator = '/salary-estimator';
 }
