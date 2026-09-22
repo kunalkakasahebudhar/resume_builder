@@ -565,7 +565,9 @@ class UserDashboardPage extends ConsumerWidget {
                   ),
                 ],
               ),
-            ),
+            );
+          },
+        ),
     );
   }
 
