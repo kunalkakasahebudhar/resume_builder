@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LightTheme {
-  // Brand Palette - Premium Indigo / Royal Blue
-  static const Color primary = Color(0xFF2563EB); // Royal Blue
-  static const Color primaryHover = Color(0xFF1D4ED8);
-  static const Color primaryLight = Color(0xFFEFF6FF); // Soft Blue Accent
-  static const Color primaryGlow = Color(0x292563EB);
+  // Brand Palette - Quiet Luxury Electric Indigo
+  static const Color primary = Color(0xFF4F46E5); // Indigo Accent
+  static const Color primaryHover = Color(0xFF4338CA);
+  static const Color primaryLight = Color(0xFFEEF2FF); // Soft Indigo Accent Fill
+  static const Color primaryGlow = Color(0x334F46E5); // 20% glow
+  static const Color primarySoft = Color(0x144F46E5); // 8% soft fill
+  static const Color primaryBorder = Color(0x334F46E5); // 20% border
 
-  static const Color secondary = Color(0xFF4F46E5); // Indigo
+  static const Color secondary = Color(0xFF6366F1); // Indigo
   static const Color secondaryLight = Color(0xFFEEF2FF);
 
-  static const Color accent = Color(0xFF06B6D4); // Cyan Accent
+  static const Color accent = Color(0xFF4F46E5); // Unified Accent
+  static const Color accentGlow = Color(0x294F46E5);
 
   // Surfaces & Backgrounds
   static const Color background = Color(0xFFF8FAFC); // Slate-50 Clean Canvas
@@ -19,15 +22,15 @@ class LightTheme {
   static const Color surfaceElevated = Color(0xFFFFFFFF);
   static const Color surfaceSecondary = Color(0xFFF1F5F9); // Slate-100
 
-  // Text & Typography
-  static const Color textPrimary = Color(0xFF0F172A); // Slate-900 High Contrast
+  // Text & Typography (High WCAG AA Contrast)
+  static const Color textPrimary = Color(0xFF0F172A); // Slate-900
   static const Color textSecondary = Color(0xFF475569); // Slate-600
   static const Color textMuted = Color(0xFF94A3B8); // Slate-400
 
   // Borders & Dividers
-  static const Color border = Color(0xFFE2E8F0); // Slate-200 Subtle
-  static const Color borderLight = Color(0xFFF1F5F9); // Slate-100
-  static const Color borderFocused = Color(0xFF2563EB);
+  static const Color border = Color(0x140F172A); // 8% black subtle
+  static const Color borderLight = Color(0x0D0F172A); // 5% black
+  static const Color borderFocused = Color(0xFF4F46E5);
 
   // Status & Feedback Colors
   static const Color success = Color(0xFF10B981); // Emerald
@@ -64,41 +67,48 @@ class LightTheme {
           fontSize: 32,
           fontWeight: FontWeight.w800,
           color: textPrimary,
-          letterSpacing: -0.8,
+          letterSpacing: -0.9,
+          height: 1.2,
         ),
         displayMedium: GoogleFonts.inter(
           fontSize: 28,
           fontWeight: FontWeight.w700,
           color: textPrimary,
-          letterSpacing: -0.6,
+          letterSpacing: -0.7,
+          height: 1.25,
         ),
         displaySmall: GoogleFonts.inter(
           fontSize: 24,
           fontWeight: FontWeight.w700,
           color: textPrimary,
-          letterSpacing: -0.4,
+          letterSpacing: -0.5,
+          height: 1.3,
         ),
         headlineMedium: GoogleFonts.inter(
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: textPrimary,
-          letterSpacing: -0.3,
+          letterSpacing: -0.4,
+          height: 1.35,
         ),
         headlineSmall: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: textPrimary,
-          letterSpacing: -0.2,
+          letterSpacing: -0.3,
+          height: 1.4,
         ),
         titleLarge: GoogleFonts.inter(
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: textPrimary,
+          letterSpacing: -0.2,
         ),
         titleMedium: GoogleFonts.inter(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: textPrimary,
+          letterSpacing: -0.1,
         ),
         titleSmall: GoogleFonts.inter(
           fontSize: 13,
@@ -121,7 +131,7 @@ class LightTheme {
           fontSize: 12,
           fontWeight: FontWeight.w400,
           color: textMuted,
-          height: 1.4,
+          height: 1.45,
         ),
         labelLarge: GoogleFonts.inter(
           fontSize: 14,
@@ -139,7 +149,7 @@ class LightTheme {
         color: surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           side: const BorderSide(color: border, width: 1),
         ),
         margin: EdgeInsets.zero,
@@ -212,7 +222,7 @@ class LightTheme {
         backgroundColor: surfaceSecondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: border, width: 0.8),
+          side: const BorderSide(color: borderLight, width: 0.8),
         ),
         labelStyle: GoogleFonts.inter(
           fontSize: 12,

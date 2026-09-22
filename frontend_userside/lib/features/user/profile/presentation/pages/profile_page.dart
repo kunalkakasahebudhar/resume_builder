@@ -6,6 +6,7 @@ import 'package:frontend_userside/features/user/dashboard/presentation/widgets/u
 import 'package:frontend_userside/features/user/profile/presentation/providers/profile_provider.dart';
 import 'package:frontend_userside/features/user/profile/presentation/widgets/profile_form.dart';
 import 'package:frontend_userside/features/user/profile/presentation/widgets/profile_header.dart';
+import 'package:frontend_userside/features/user/profile/presentation/widgets/subscription_card.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -32,7 +33,9 @@ class ProfilePage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ProfileHeader(profile: state.profile),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
+                      const SubscriptionCard(),
+                      const SizedBox(height: 20),
                       if (state.profile != null)
                         ProfileForm(profile: state.profile!),
                     ],

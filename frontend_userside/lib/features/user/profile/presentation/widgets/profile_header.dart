@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend_userside/features/user/profile/domain/entities/profile.dart';
+import 'package:frontend_userside/features/user/profile/presentation/providers/subscription_provider.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends ConsumerWidget {
   final Profile? profile;
 
   const ProfileHeader({super.key, this.profile});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sub = ref.watch(subscriptionProvider);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final initials = (profile?.fullName.isNotEmpty ?? false)
@@ -43,7 +46,7 @@ class ProfileHeader extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 36,
-                backgroundColor: const Color(0xFF4F46E5),
+                backgroundColor: sub.isPremium ? const Color(0xFF4F46E5) : const Color(0xFF0F172A),
                 child: Text(
                   initials,
                   style: const TextStyle(
@@ -76,7 +79,10 @@ class ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
                       profile?.fullName ?? 'Alex Morgan',
@@ -86,34 +92,45 @@ class ProfileHeader extends StatelessWidget {
                         color: isDark ? Colors.white : const Color(0xFF0F172A),
                       ),
                     ),
-                    const SizedBox(width: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4F46E5).withValues(alpha: 0.1),
+                        color: sub.isPremium
+                            ? const Color(0xFF4F46E5).withValues(alpha: 0.1)
+                            : const Color(0xFFF59E0B).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
+                          color: sub.isPremium
+                              ? const Color(0xFF4F46E5).withValues(alpha: 0.3)
+                              : const Color(0xFFF59E0B).withValues(alpha: 0.3),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.verified,
+                            sub.isPremium
+                                ? Icons.verified
+                                : Icons.electric_bolt_rounded,
                             size: 12,
-                            color: Color(0xFF4F46E5),
+                            color: sub.isPremium
+                                ? const Color(0xFF4F46E5)
+                                : const Color(0xFFD97706),
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
-                            'PRO ACCOUNT',
+                            sub.isPremium
+                                ? 'PRO VIP'
+                                : 'FREE (${sub.freeUsesLeft}/3)',
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF4F46E5),
+                              color: sub.isPremium
+                                  ? const Color(0xFF4F46E5)
+                                  : const Color(0xFFD97706),
                             ),
                           ),
                         ],

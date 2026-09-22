@@ -75,22 +75,25 @@ class _SkillFormState extends ConsumerState<SkillForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Skills & Technologies',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Skills & Technologies',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Categorized skills parsed by ATS keyword matchers',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      'Categorized skills parsed by ATS keyword matchers',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${skills.length} added',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -100,71 +103,105 @@ class _SkillFormState extends ConsumerState<SkillForm> {
             ],
           ),
           const SizedBox(height: 18),
-          // Input row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 3,
-                child: AppTextField(
-                  label: 'Add Skill Name',
-                  hint: 'e.g. Flutter, Go, PostgreSQL, Docker',
-                  controller: _skillInputController,
-                  onFieldSubmitted: (_) => _addSkill(),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: AppDropdown<SkillCategory>(
-                  label: 'Category',
-                  value: _selectedCategory,
-                  items: const [
-                    DropdownMenuItem(
-                      value: SkillCategory.technical,
-                      child: Text('Technical'),
+          // Input layout
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isNarrow = constraints.maxWidth < 500;
+              final dropdown = AppDropdown<SkillCategory>(
+                label: 'Category',
+                value: _selectedCategory,
+                items: const [
+                  DropdownMenuItem(
+                    value: SkillCategory.technical,
+                    child: Text('Technical'),
+                  ),
+                  DropdownMenuItem(
+                    value: SkillCategory.programmingLanguage,
+                    child: Text('Languages'),
+                  ),
+                  DropdownMenuItem(
+                    value: SkillCategory.framework,
+                    child: Text('Frameworks'),
+                  ),
+                  DropdownMenuItem(
+                    value: SkillCategory.database,
+                    child: Text('Databases'),
+                  ),
+                  DropdownMenuItem(
+                    value: SkillCategory.tool,
+                    child: Text('Tools & DevOps'),
+                  ),
+                  DropdownMenuItem(
+                    value: SkillCategory.softSkill,
+                    child: Text('Soft Skills'),
+                  ),
+                ],
+                onChanged: (val) {
+                  if (val != null) {
+                    setState(() {
+                      _selectedCategory = val;
+                    });
+                  }
+                },
+              );
+
+              final addButton = AppButton(
+                text: 'Add',
+                icon: Icons.add_rounded,
+                height: 44,
+                onPressed: _addSkill,
+              );
+
+              if (isNarrow) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppTextField(
+                      label: 'Add Skill Name',
+                      hint: 'e.g. Flutter, Go, PostgreSQL, Docker',
+                      controller: _skillInputController,
+                      onFieldSubmitted: (_) => _addSkill(),
                     ),
-                    DropdownMenuItem(
-                      value: SkillCategory.programmingLanguage,
-                      child: Text('Languages'),
-                    ),
-                    DropdownMenuItem(
-                      value: SkillCategory.framework,
-                      child: Text('Frameworks'),
-                    ),
-                    DropdownMenuItem(
-                      value: SkillCategory.database,
-                      child: Text('Databases'),
-                    ),
-                    DropdownMenuItem(
-                      value: SkillCategory.tool,
-                      child: Text('Tools & DevOps'),
-                    ),
-                    DropdownMenuItem(
-                      value: SkillCategory.softSkill,
-                      child: Text('Soft Skills'),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(child: dropdown),
+                        const SizedBox(width: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: addButton,
+                        ),
+                      ],
                     ),
                   ],
-                  onChanged: (val) {
-                    if (val != null) {
-                      setState(() {
-                        _selectedCategory = val;
-                      });
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(width: 12),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: AppButton(
-                  text: 'Add',
-                  icon: Icons.add_rounded,
-                  height: 44,
-                  onPressed: _addSkill,
-                ),
-              ),
-            ],
+                );
+              }
+
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: AppTextField(
+                      label: 'Add Skill Name',
+                      hint: 'e.g. Flutter, Go, PostgreSQL, Docker',
+                      controller: _skillInputController,
+                      onFieldSubmitted: (_) => _addSkill(),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: dropdown,
+                  ),
+                  const SizedBox(width: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 2),
+                    child: addButton,
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 20),
           const Divider(),

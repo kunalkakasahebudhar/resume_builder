@@ -6,7 +6,9 @@ import 'package:frontend_userside/core/widgets/app_empty_state.dart';
 import 'package:frontend_userside/core/widgets/app_loader.dart';
 import 'package:frontend_userside/core/widgets/app_text_field.dart';
 import 'package:frontend_userside/features/user/dashboard/presentation/widgets/resume_card.dart';
+import 'package:frontend_userside/features/user/dashboard/presentation/widgets/usage_limit_banner.dart';
 import 'package:frontend_userside/features/user/dashboard/presentation/widgets/user_layout.dart';
+import 'package:frontend_userside/features/user/profile/presentation/providers/subscription_provider.dart';
 import 'package:frontend_userside/features/user/resume/domain/entities/resume.dart';
 import 'package:frontend_userside/features/user/resume/presentation/providers/resume_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -27,15 +29,23 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
     super.dispose();
   }
 
-  void _showCreateDialog() {
+  Future<void> _showCreateDialog() async {
+    final allowed = await ref
+        .read(subscriptionProvider.notifier)
+        .checkAndConsumeQuota(context, actionName: 'Resume Creation');
+
+    if (!allowed) return;
+
+    if (!mounted) return;
+
     final titleController = TextEditingController(
-      text: 'My Professional Resume',
+      text: 'My ATS Professional Resume',
     );
 
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Create New Resume',
+        title: 'Create New ATS Resume',
         content: AppTextField(
           label: 'Resume Title',
           hint: 'e.g. Senior Software Engineer Resume',
@@ -154,7 +164,9 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            const UsageLimitBanner(),
+            const SizedBox(height: 16),
             // Search & Filter Bar
             LayoutBuilder(
               builder: (context, constraints) {
@@ -335,12 +347,18 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
                             context.push('/ats');
                           },
                           onDuplicate: () async {
-                            final messenger = ScaffoldMessenger.of(context);
+                            final allowed = await ref
+                                 .read(subscriptionProvider.notifier)
+                                 .checkAndConsumeQuota(context,
+                                     actionName: 'Duplicate Resume');
+                            if (!allowed) return;
+
                             final dup = await ref
                                 .read(resumesListProvider.notifier)
                                 .duplicateResume(resume.id);
-                            if (dup != null && mounted) {
-                              messenger.showSnackBar(
+                            if (!context.mounted) return;
+                            if (dup != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('Duplicated "${resume.title}"'),
                                 ),

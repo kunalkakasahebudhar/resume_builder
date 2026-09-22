@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend_userside/core/widgets/app_button.dart';
 import 'package:frontend_userside/core/widgets/app_card.dart';
 import 'package:frontend_userside/core/widgets/app_empty_state.dart';
+import 'package:frontend_userside/features/user/dashboard/presentation/widgets/usage_limit_banner.dart';
 import 'package:frontend_userside/features/user/dashboard/presentation/widgets/user_layout.dart';
 import 'package:frontend_userside/features/user/pdf/presentation/widgets/pdf_download_button.dart';
 import 'package:frontend_userside/features/user/preview/presentation/widgets/resume_renderer.dart';
@@ -37,10 +38,10 @@ class PdfPreviewPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isNarrow = constraints.maxWidth < 680;
+                          final titleContent = Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -55,8 +56,11 @@ class PdfPreviewPage extends ConsumerWidget {
                                 style: theme.textTheme.bodyMedium,
                               ),
                             ],
-                          ),
-                          Row(
+                          );
+
+                          final actions = Wrap(
+                            spacing: 12,
+                            runSpacing: 8,
                             children: [
                               AppButton(
                                 text: 'Back to Editor',
@@ -65,16 +69,38 @@ class PdfPreviewPage extends ConsumerWidget {
                                 onPressed: () =>
                                     context.push('/resumes/${resume.id}'),
                               ),
-                              const SizedBox(width: 12),
                               PdfDownloadButton(
                                 resumeId: resume.id,
                                 title: resume.title,
                               ),
                             ],
-                          ),
-                        ],
+                          );
+
+                          if (isNarrow) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                titleContent,
+                                const SizedBox(height: 14),
+                                actions,
+                              ],
+                            );
+                          }
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: titleContent),
+                              const SizedBox(width: 16),
+                              actions,
+                            ],
+                          );
+                        },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
+                      const UsageLimitBanner(),
+                      const SizedBox(height: 16),
                       AppCard(
                         padding: const EdgeInsets.all(16),
                         child: Row(

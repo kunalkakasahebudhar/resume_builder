@@ -246,118 +246,71 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (!isDesktop)
-                      IconButton(
-                        icon: Icon(
-                          _showPreviewOnMobile
-                              ? Icons.edit_note_rounded
-                              : Icons.visibility_outlined,
+                const SizedBox(width: 12),
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (!isDesktop)
+                          IconButton(
+                            icon: Icon(
+                              _showPreviewOnMobile
+                                  ? Icons.edit_note_rounded
+                                  : Icons.visibility_outlined,
+                            ),
+                            tooltip: _showPreviewOnMobile
+                                ? 'Edit Form'
+                                : 'Live Preview',
+                            onPressed: () {
+                              setState(() {
+                                _showPreviewOnMobile = !_showPreviewOnMobile;
+                              });
+                            },
+                          ),
+                        const SizedBox(width: 6),
+                        AppButton(
+                          text: 'Templates',
+                          type: ButtonType.outline,
+                          icon: Icons.palette_outlined,
+                          height: 36,
+                          onPressed: () => context.push('/templates'),
                         ),
-                        tooltip: _showPreviewOnMobile
-                            ? 'Edit Form'
-                            : 'Live Preview',
-                        onPressed: () {
-                          setState(() {
-                            _showPreviewOnMobile = !_showPreviewOnMobile;
-                          });
-                        },
-                      ),
-                    const SizedBox(width: 4),
-                    // Templates button
-                    if (isNarrow)
-                      IconButton(
-                        icon: const Icon(Icons.palette_outlined, size: 20),
-                        tooltip: 'Templates',
-                        onPressed: () => context.push('/templates'),
-                        style: IconButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              color: isDark
-                                  ? const Color(0xFF334155)
-                                  : const Color(0xFFCBD5E1),
+                        const SizedBox(width: 8),
+                        AppButton(
+                          text: 'ATS Analyzer',
+                          type: ButtonType.outline,
+                          icon: Icons.analytics_outlined,
+                          height: 36,
+                          onPressed: () => context.push('/ats'),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          onPressed: () => context.push('/pdf'),
+                          icon: const Icon(Icons.download_rounded, size: 16),
+                          label: const Text('Export PDF'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF4F46E5),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 0,
+                            ),
+                            minimumSize: const Size(0, 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                      )
-                    else
-                      AppButton(
-                        text: 'Templates',
-                        type: ButtonType.outline,
-                        icon: Icons.palette_outlined,
-                        height: 36,
-                        onPressed: () => context.push('/templates'),
-                      ),
-                    const SizedBox(width: 6),
-                    // ATS Analyzer button
-                    if (isNarrow)
-                      IconButton(
-                        icon: const Icon(Icons.analytics_outlined, size: 20),
-                        tooltip: 'ATS Analyzer',
-                        onPressed: () => context.push('/ats'),
-                        style: IconButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              color: isDark
-                                  ? const Color(0xFF334155)
-                                  : const Color(0xFFCBD5E1),
-                            ),
-                          ),
-                        ),
-                      )
-                    else
-                      AppButton(
-                        text: 'ATS Analyzer',
-                        type: ButtonType.outline,
-                        icon: Icons.analytics_outlined,
-                        height: 36,
-                        onPressed: () => context.push('/ats'),
-                      ),
-                    const SizedBox(width: 6),
-                    // Export PDF button
-                    if (isNarrow)
-                      IconButton.filled(
-                        onPressed: () => context.push('/pdf'),
-                        icon: const Icon(Icons.download_rounded, size: 18),
-                        tooltip: 'Export PDF',
-                        style: IconButton.styleFrom(
-                          backgroundColor: const Color(0xFF4F46E5),
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(36, 36),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      )
-                    else
-                      ElevatedButton.icon(
-                        onPressed: () => context.push('/pdf'),
-                        icon: const Icon(Icons.download_rounded, size: 16),
-                        label: const Text('Export PDF'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4F46E5),
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 0,
-                          ),
-                          minimumSize: const Size(0, 36),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:frontend_userside/features/user/resume/domain/entities/project.d
 import 'package:frontend_userside/features/user/resume/presentation/providers/resume_provider.dart';
 import 'package:frontend_userside/features/user/resume/presentation/widgets/add_item_button.dart';
 import 'package:frontend_userside/features/user/resume/presentation/widgets/reorderable_section_list.dart';
+import 'package:frontend_userside/features/user/tools/presentation/widgets/ai_bullet_rewriter_dialog.dart';
 
 class ProjectForm extends ConsumerWidget {
   const ProjectForm({super.key});
@@ -58,22 +59,25 @@ class ProjectForm extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Projects',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Projects',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Showcase notable software, engineering, and personal projects',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      'Showcase notable software, engineering, and personal projects',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${projects.length} projects',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -193,23 +197,28 @@ class _ProjectItemCardState extends State<_ProjectItemCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.drag_indicator_rounded,
-                    size: 18,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    widget.project.projectName.isNotEmpty
-                        ? widget.project.projectName
-                        : 'New Project',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.drag_indicator_rounded,
+                      size: 18,
+                      color: Colors.grey,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        widget.project.projectName.isNotEmpty
+                            ? widget.project.projectName
+                            : 'New Project',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               IconButton(
                 icon: const Icon(
@@ -237,10 +246,77 @@ class _ProjectItemCardState extends State<_ProjectItemCard> {
             onChanged: (_) => _notify(),
           ),
           const SizedBox(height: 12),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 6,
+            children: [
+              Text(
+                'Project Description *',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  final result = await AiBulletRewriterDialog.show(
+                    context,
+                    initialText: _descController.text,
+                  );
+                  if (result != null && result.isNotEmpty) {
+                    setState(() {
+                      if (_descController.text.trim().isEmpty) {
+                        _descController.text = result;
+                      } else {
+                        _descController.text =
+                            '${_descController.text}\n$result';
+                      }
+                    });
+                    _notify();
+                  }
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 13,
+                        color: Color(0xFF6366F1),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'AI Bullet Rewriter',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF6366F1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
           AppTextField(
-            label: 'Project Description *',
+            label: 'Bullet Points (Use • for ATS format)',
             hint:
-                'Engineered a scalable platform with real-time parser scoring...',
+                '• Engineered a scalable platform with real-time parser scoring...\n• Optimized database queries cutting response time by 35%...',
             controller: _descController,
             maxLines: 3,
             onChanged: (_) => _notify(),

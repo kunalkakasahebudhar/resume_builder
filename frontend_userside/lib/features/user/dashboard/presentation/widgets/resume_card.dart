@@ -152,7 +152,10 @@ class ResumeCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      Row(
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 4,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -180,7 +183,6 @@ class ResumeCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 6,
@@ -193,9 +195,7 @@ class ResumeCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              resume.templateId
-                                  .replaceAll('_', ' ')
-                                  .toUpperCase(),
+                              _formatTemplateName(resume.templateId),
                               style: const TextStyle(
                                 color: Color(0xFF4F46E5),
                                 fontWeight: FontWeight.w600,
@@ -427,5 +427,37 @@ class ResumeCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatTemplateName(String templateId) {
+    switch (templateId) {
+      case 'ats_harvard':
+        return 'Harvard';
+      case 'ats_tech_minimal':
+        return 'Silicon Tech';
+      case 'ats_modern_clean':
+        return 'Modern Clean';
+      case 'ats_executive':
+        return 'Executive';
+      case 'ats_quant':
+        return 'Quant';
+      case 'ats_compact':
+        return 'Compact 1-Page';
+      case 'ats_stanford':
+        return 'Stanford';
+      case 'ats_classic':
+        return 'Classic ATS';
+      case 'ats_professional':
+        return 'Professional';
+      case 'ats_fresher':
+        return 'Fresher';
+      case 'ats_experienced':
+        return 'Senior Leader';
+      default:
+        return templateId
+            .replaceAll('ats_', '')
+            .replaceAll('_', ' ')
+            .toUpperCase();
+    }
   }
 }

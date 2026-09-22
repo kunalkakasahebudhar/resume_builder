@@ -28,11 +28,14 @@ class AtsWarningList extends StatelessWidget {
                 size: 20,
               ),
               const SizedBox(width: 8),
-              Text(
-                'Potential Issues & Warnings (${warnings.length})',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFFD97706),
+              Expanded(
+                child: Text(
+                  'Potential Issues & Warnings (${warnings.length})',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFFD97706),
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

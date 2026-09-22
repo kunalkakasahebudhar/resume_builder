@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_userside/core/widgets/app_button.dart';
+import 'package:frontend_userside/features/user/dashboard/presentation/widgets/usage_limit_banner.dart';
 
 class ResumeToolbar extends StatelessWidget {
   final double scale;
@@ -7,6 +8,9 @@ class ResumeToolbar extends StatelessWidget {
   final VoidCallback onDownloadPdf;
   final VoidCallback onSelectTemplate;
   final VoidCallback onAnalyzeAts;
+  final bool isHeatmapActive;
+  final VoidCallback onToggleHeatmap;
+  final VoidCallback onShareLink;
 
   const ResumeToolbar({
     super.key,
@@ -15,6 +19,9 @@ class ResumeToolbar extends StatelessWidget {
     required this.onDownloadPdf,
     required this.onSelectTemplate,
     required this.onAnalyzeAts,
+    this.isHeatmapActive = false,
+    required this.onToggleHeatmap,
+    required this.onShareLink,
   });
 
   @override
@@ -30,53 +37,74 @@ class ResumeToolbar extends StatelessWidget {
           color: theme.colorScheme.outline.withValues(alpha: 0.5),
         ),
       ),
-      child: Row(
-        children: [
-          // Zoom Controls
-          IconButton(
-            icon: const Icon(Icons.zoom_out_rounded, size: 20),
-            tooltip: 'Zoom Out',
-            onPressed: scale > 0.6
-                ? () => onScaleChanged((scale - 0.1).clamp(0.5, 1.5))
-                : null,
-          ),
-          Text(
-            '${(scale * 100).toInt()}%',
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            // Zoom Controls
+            IconButton(
+              icon: const Icon(Icons.zoom_out_rounded, size: 20),
+              tooltip: 'Zoom Out',
+              onPressed: scale > 0.6
+                  ? () => onScaleChanged((scale - 0.1).clamp(0.5, 1.5))
+                  : null,
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.zoom_in_rounded, size: 20),
-            tooltip: 'Zoom In',
-            onPressed: scale < 1.4
-                ? () => onScaleChanged((scale + 0.1).clamp(0.5, 1.5))
-                : null,
-          ),
-          const Spacer(),
-          AppButton(
-            text: 'Templates',
-            icon: Icons.palette_outlined,
-            type: ButtonType.outline,
-            height: 36,
-            onPressed: onSelectTemplate,
-          ),
-          const SizedBox(width: 8),
-          AppButton(
-            text: 'ATS Score',
-            icon: Icons.analytics_outlined,
-            type: ButtonType.outline,
-            height: 36,
-            onPressed: onAnalyzeAts,
-          ),
-          const SizedBox(width: 8),
-          AppButton(
-            text: 'Export PDF',
-            icon: Icons.picture_as_pdf_outlined,
-            height: 36,
-            onPressed: onDownloadPdf,
-          ),
-        ],
+            Text(
+              '${(scale * 100).toInt()}%',
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.zoom_in_rounded, size: 20),
+              tooltip: 'Zoom In',
+              onPressed: scale < 1.4
+                  ? () => onScaleChanged((scale + 0.1).clamp(0.5, 1.5))
+                  : null,
+            ),
+            const SizedBox(width: 12),
+            const UsageLimitBanner(compact: true),
+            const SizedBox(width: 16),
+            AppButton(
+              text: isHeatmapActive ? 'Exit Heatmap' : 'Recruiter Heatmap',
+              icon: Icons.remove_red_eye_rounded,
+              type: isHeatmapActive ? ButtonType.primary : ButtonType.outline,
+              height: 36,
+              onPressed: onToggleHeatmap,
+            ),
+            const SizedBox(width: 8),
+            AppButton(
+              text: 'Share Link',
+              icon: Icons.share_rounded,
+              type: ButtonType.outline,
+              height: 36,
+              onPressed: onShareLink,
+            ),
+            const SizedBox(width: 8),
+            AppButton(
+              text: 'Templates',
+              icon: Icons.palette_outlined,
+              type: ButtonType.outline,
+              height: 36,
+              onPressed: onSelectTemplate,
+            ),
+            const SizedBox(width: 8),
+            AppButton(
+              text: 'ATS Score',
+              icon: Icons.analytics_outlined,
+              type: ButtonType.outline,
+              height: 36,
+              onPressed: onAnalyzeAts,
+            ),
+            const SizedBox(width: 8),
+            AppButton(
+              text: 'Export PDF',
+              icon: Icons.picture_as_pdf_outlined,
+              height: 36,
+              onPressed: onDownloadPdf,
+            ),
+          ],
+        ),
       ),
     );
   }
