@@ -24,11 +24,12 @@ func (h *Handler) Register(c *gin.Context) {
 		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	if err := h.svc.Register(&req); err != nil {
+	resp, err := h.svc.Register(&req)
+	if err != nil {
 		apperrors.Handle(c, err)
 		return
 	}
-	utils.SendSuccess(c, http.StatusCreated, constants.MsgRegistered, nil)
+	utils.SendSuccess(c, http.StatusCreated, constants.MsgCreated, resp)
 }
 
 func (h *Handler) Login(c *gin.Context) {
@@ -45,19 +46,6 @@ func (h *Handler) Login(c *gin.Context) {
 	utils.SendSuccess(c, http.StatusOK, constants.MsgLoggedIn, resp)
 }
 
-func (h *Handler) VerifyEmail(c *gin.Context) {
-	var req models.VerifyEmailRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		utils.SendError(c, http.StatusBadRequest, err.Error())
-		return
-	}
-	if err := h.svc.VerifyEmail(&req); err != nil {
-		apperrors.Handle(c, err)
-		return
-	}
-	utils.SendSuccess(c, http.StatusOK, constants.MsgOTPVerified, nil)
-}
-
 func (h *Handler) ForgotPassword(c *gin.Context) {
 	var req models.ForgotPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -68,7 +56,7 @@ func (h *Handler) ForgotPassword(c *gin.Context) {
 		apperrors.Handle(c, err)
 		return
 	}
-	utils.SendSuccess(c, http.StatusOK, constants.MsgOTPSent, nil)
+	utils.SendSuccess(c, http.StatusOK, "Email found. You can reset your password.", nil)
 }
 
 func (h *Handler) ResetPassword(c *gin.Context) {

@@ -7,8 +7,7 @@ import (
 
 func Bootstrap(rg *gin.RouterGroup, db *gorm.DB) {
 	repo := NewRepository(db)
-	emailSvc := NewEmailService()
-	svc := NewService(repo, emailSvc)
+	svc := NewService(repo)
 	handler := NewHandler(svc)
 	RegisterRoutes(rg, handler)
 }
