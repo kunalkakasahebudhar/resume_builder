@@ -7,6 +7,7 @@ import 'package:frontend_userside/features/user/resume/domain/entities/experienc
 import 'package:frontend_userside/features/user/resume/presentation/providers/resume_provider.dart';
 import 'package:frontend_userside/features/user/resume/presentation/widgets/add_item_button.dart';
 import 'package:frontend_userside/features/user/resume/presentation/widgets/reorderable_section_list.dart';
+import 'package:frontend_userside/features/user/tools/presentation/widgets/ai_bullet_rewriter_dialog.dart';
 
 class ExperienceForm extends ConsumerWidget {
   const ExperienceForm({super.key});
@@ -63,22 +64,25 @@ class ExperienceForm extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Work Experience',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Work Experience',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Positions, roles, accomplishments, and quantifiable bullet points',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      'Positions, roles, accomplishments, and quantifiable bullet points',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${experiences.length} roles',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -203,23 +207,28 @@ class _ExperienceItemCardState extends State<_ExperienceItemCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.drag_indicator_rounded,
-                    size: 18,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    widget.exp.jobTitle.isNotEmpty
-                        ? widget.exp.jobTitle
-                        : 'New Position',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.drag_indicator_rounded,
+                      size: 18,
+                      color: Colors.grey,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        widget.exp.jobTitle.isNotEmpty
+                            ? widget.exp.jobTitle
+                            : 'New Position',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               IconButton(
                 icon: const Icon(
@@ -369,9 +378,75 @@ class _ExperienceItemCardState extends State<_ExperienceItemCard> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 6,
+            children: [
+              Text(
+                'Key Responsibilities & Achievements',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  final result = await AiBulletRewriterDialog.show(
+                    context,
+                    initialText: _descriptionController.text,
+                  );
+                  if (result != null && result.isNotEmpty) {
+                    setState(() {
+                      if (_descriptionController.text.trim().isEmpty) {
+                        _descriptionController.text = result;
+                      } else {
+                        _descriptionController.text =
+                            '${_descriptionController.text}\n$result';
+                      }
+                    });
+                    _notify();
+                  }
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 13,
+                        color: Color(0xFF6366F1),
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'AI Bullet Rewriter',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF6366F1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
           AppTextField(
-            label: 'Key Responsibilities & Achievements (Use • bullet points)',
+            label: 'Bullet Points (Use • for ATS format)',
             hint:
                 '• Architected RESTful microservices...\n• Reduced latency by 40% via Redis...',
             controller: _descriptionController,

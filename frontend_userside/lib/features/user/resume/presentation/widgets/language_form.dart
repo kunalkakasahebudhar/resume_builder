@@ -73,22 +73,25 @@ class _LanguageFormState extends ConsumerState<LanguageForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Languages',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Languages',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Spoken & written language proficiencies',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      'Spoken & written language proficiencies',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${languages.length} languages',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -98,60 +101,94 @@ class _LanguageFormState extends ConsumerState<LanguageForm> {
             ],
           ),
           const SizedBox(height: 18),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 3,
-                child: AppTextField(
-                  label: 'Language',
-                  hint: 'e.g. English, Spanish, German',
-                  controller: _langController,
-                  onFieldSubmitted: (_) => _addLanguage(),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: AppDropdown<String>(
-                  label: 'Proficiency',
-                  value: _proficiency,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Beginner',
-                      child: Text('Beginner'),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isNarrow = constraints.maxWidth < 500;
+              final dropdown = AppDropdown<String>(
+                label: 'Proficiency',
+                value: _proficiency,
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Beginner',
+                    child: Text('Beginner'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Intermediate',
+                    child: Text('Intermediate'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Advanced',
+                    child: Text('Advanced'),
+                  ),
+                  DropdownMenuItem(value: 'Fluent', child: Text('Fluent')),
+                  DropdownMenuItem(value: 'Native', child: Text('Native')),
+                ],
+                onChanged: (val) {
+                  if (val != null) {
+                    setState(() {
+                      _proficiency = val;
+                    });
+                  }
+                },
+              );
+
+              final addButton = AppButton(
+                text: 'Add',
+                icon: Icons.add_rounded,
+                height: 44,
+                onPressed: _addLanguage,
+              );
+
+              if (isNarrow) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppTextField(
+                      label: 'Language',
+                      hint: 'e.g. English, Spanish, German',
+                      controller: _langController,
+                      onFieldSubmitted: (_) => _addLanguage(),
                     ),
-                    DropdownMenuItem(
-                      value: 'Intermediate',
-                      child: Text('Intermediate'),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(child: dropdown),
+                        const SizedBox(width: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: addButton,
+                        ),
+                      ],
                     ),
-                    DropdownMenuItem(
-                      value: 'Advanced',
-                      child: Text('Advanced'),
-                    ),
-                    DropdownMenuItem(value: 'Fluent', child: Text('Fluent')),
-                    DropdownMenuItem(value: 'Native', child: Text('Native')),
                   ],
-                  onChanged: (val) {
-                    if (val != null) {
-                      setState(() {
-                        _proficiency = val;
-                      });
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(width: 12),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: AppButton(
-                  text: 'Add',
-                  icon: Icons.add_rounded,
-                  height: 44,
-                  onPressed: _addLanguage,
-                ),
-              ),
-            ],
+                );
+              }
+
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: AppTextField(
+                      label: 'Language',
+                      hint: 'e.g. English, Spanish, German',
+                      controller: _langController,
+                      onFieldSubmitted: (_) => _addLanguage(),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: dropdown,
+                  ),
+                  const SizedBox(width: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 2),
+                    child: addButton,
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 16),
           const Divider(),

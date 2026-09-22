@@ -116,6 +116,10 @@ class ResumesListNotifier extends StateNotifier<ResumesListState> {
     state = state.copyWith(sortBy: sort);
   }
 
+  void addResume(Resume resume) {
+    state = state.copyWith(resumes: [resume, ...state.resumes]);
+  }
+
   Future<Resume?> createResume(String title, {String? templateId}) async {
     try {
       final newResume = await _repository.createResume(

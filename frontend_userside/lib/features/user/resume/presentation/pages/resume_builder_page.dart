@@ -241,65 +241,70 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (!isDesktop)
-                      IconButton(
-                        icon: Icon(
-                          _showPreviewOnMobile
-                              ? Icons.edit_note_rounded
-                              : Icons.visibility_outlined,
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (!isDesktop)
+                          IconButton(
+                            icon: Icon(
+                              _showPreviewOnMobile
+                                  ? Icons.edit_note_rounded
+                                  : Icons.visibility_outlined,
+                            ),
+                            tooltip: _showPreviewOnMobile
+                                ? 'Edit Form'
+                                : 'Live Preview',
+                            onPressed: () {
+                              setState(() {
+                                _showPreviewOnMobile = !_showPreviewOnMobile;
+                              });
+                            },
+                          ),
+                        const SizedBox(width: 6),
+                        AppButton(
+                          text: 'Templates',
+                          type: ButtonType.outline,
+                          icon: Icons.palette_outlined,
+                          height: 36,
+                          onPressed: () => context.push('/templates'),
                         ),
-                        tooltip: _showPreviewOnMobile
-                            ? 'Edit Form'
-                            : 'Live Preview',
-                        onPressed: () {
-                          setState(() {
-                            _showPreviewOnMobile = !_showPreviewOnMobile;
-                          });
-                        },
-                      ),
-                    const SizedBox(width: 6),
-                    AppButton(
-                      text: 'Templates',
-                      type: ButtonType.outline,
-                      icon: Icons.palette_outlined,
-                      height: 36,
-                      onPressed: () => context.push('/templates'),
+                        const SizedBox(width: 8),
+                        AppButton(
+                          text: 'ATS Analyzer',
+                          type: ButtonType.outline,
+                          icon: Icons.analytics_outlined,
+                          height: 36,
+                          onPressed: () => context.push('/ats'),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          onPressed: () => context.push('/pdf'),
+                          icon: const Icon(Icons.download_rounded, size: 16),
+                          label: const Text('Export PDF'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF4F46E5),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 0,
+                            ),
+                            minimumSize: const Size(0, 36),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    AppButton(
-                      text: 'ATS Analyzer',
-                      type: ButtonType.outline,
-                      icon: Icons.analytics_outlined,
-                      height: 36,
-                      onPressed: () => context.push('/ats'),
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton.icon(
-                      onPressed: () => context.push('/pdf'),
-                      icon: const Icon(Icons.download_rounded, size: 16),
-                      label: const Text('Export PDF'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4F46E5),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 0,
-                        ),
-                        minimumSize: const Size(0, 36),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        textStyle: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

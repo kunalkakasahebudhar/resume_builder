@@ -23,6 +23,10 @@ import 'package:frontend_userside/features/user/resume/presentation/pages/resume
 import 'package:frontend_userside/features/user/resume/presentation/pages/skills_page.dart';
 import 'package:frontend_userside/features/user/resume/presentation/pages/summary_page.dart';
 import 'package:frontend_userside/features/user/templates/presentation/pages/template_selection_page.dart';
+import 'package:frontend_userside/features/user/tools/presentation/pages/cover_letter_page.dart';
+import 'package:frontend_userside/features/user/tools/presentation/pages/interview_prep_page.dart';
+import 'package:frontend_userside/features/user/tools/presentation/pages/jd_matcher_page.dart';
+import 'package:frontend_userside/features/user/tools/presentation/pages/salary_estimator_page.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -186,6 +190,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/pdf',
         builder: (context, state) => const PdfPreviewPage(),
+      ),
+      GoRoute(
+        path: '/jd-matcher',
+        builder: (context, state) => const JdMatcherPage(),
+      ),
+      GoRoute(
+        path: '/cover-letter',
+        builder: (context, state) => const CoverLetterPage(),
+      ),
+      GoRoute(
+        path: '/interview-prep',
+        builder: (context, state) => const InterviewPrepPage(),
+      ),
+      GoRoute(
+        path: '/salary-estimator',
+        builder: (context, state) => const SalaryEstimatorPage(),
       ),
     ],
   );

@@ -4,6 +4,8 @@ import 'package:frontend_userside/core/widgets/app_card.dart';
 import 'package:frontend_userside/core/widgets/app_text_field.dart';
 import 'package:frontend_userside/features/user/resume/presentation/providers/resume_provider.dart';
 
+import 'package:frontend_userside/features/user/tools/presentation/widgets/ai_bullet_rewriter_dialog.dart';
+
 class SummaryForm extends ConsumerStatefulWidget {
   const SummaryForm({super.key});
 
@@ -42,11 +44,66 @@ class _SummaryFormState extends ConsumerState<SummaryForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Professional Summary',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              Text(
+                'Professional Summary',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  final result = await AiBulletRewriterDialog.show(
+                    context,
+                    initialText: _summaryController.text,
+                  );
+                  if (result != null && result.isNotEmpty) {
+                    setState(() {
+                      _summaryController.text = result;
+                    });
+                    _onChanged();
+                  }
+                },
+                borderRadius: BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF6366F1).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 14,
+                        color: Color(0xFF6366F1),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        'AI Summary Enhancer',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF6366F1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
