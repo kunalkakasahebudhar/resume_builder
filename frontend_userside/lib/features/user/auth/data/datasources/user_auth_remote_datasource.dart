@@ -1,7 +1,6 @@
 import 'package:frontend_userside/config/backend_config.dart';
 import 'package:frontend_userside/core/error/exceptions.dart';
 import 'package:frontend_userside/core/network/dio_client.dart';
-import 'package:frontend_userside/features/user/auth/data/models/user_model.dart';
 
 abstract class UserAuthRemoteDataSource {
   Future<Map<String, dynamic>> login(String email, String password);
@@ -13,7 +12,8 @@ abstract class UserAuthRemoteDataSource {
   Future<void> logout();
   Future<void> forgotPassword(String email);
   Future<void> resetPassword({
-    required String token,
+    required String email,
+    required String otp,
     required String newPassword,
   });
 }
@@ -76,13 +76,14 @@ class UserAuthRemoteDataSourceImpl implements UserAuthRemoteDataSource {
 
   @override
   Future<void> resetPassword({
-    required String token,
+    required String email,
+    required String otp,
     required String newPassword,
   }) async {
     try {
       await dioClient.post(
         BackendConfig.resetPassword,
-        data: {'token': token, 'new_password': newPassword},
+        data: {'email': email, 'otp': otp, 'new_password': newPassword},
       );
     } on ServerException catch (e) {
       throw AuthException(message: e.message);

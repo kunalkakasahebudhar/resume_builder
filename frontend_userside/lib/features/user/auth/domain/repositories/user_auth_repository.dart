@@ -10,7 +10,8 @@ abstract class UserAuthRepository {
   Future<void> logout();
   Future<void> forgotPassword(String email);
   Future<void> resetPassword({
-    required String token,
+    required String email,
+    required String otp,
     required String newPassword,
   });
   Future<User?> getCurrentUser();

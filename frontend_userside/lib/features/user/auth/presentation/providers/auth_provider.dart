@@ -180,12 +180,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<bool> resetPassword({
-    required String token,
+    required String email,
+    required String otp,
     required String newPassword,
   }) async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      await _resetPasswordUseCase(token: token, newPassword: newPassword);
+      await _resetPasswordUseCase(email: email, otp: otp, newPassword: newPassword);
       state = state.copyWith(isLoading: false, clearError: true);
       return true;
     } catch (e) {

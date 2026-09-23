@@ -9,7 +9,8 @@ import 'package:frontend_userside/features/user/auth/presentation/widgets/auth_h
 import 'package:go_router/go_router.dart';
 
 class ResetPasswordPage extends ConsumerStatefulWidget {
-  const ResetPasswordPage({super.key});
+  final String email;
+  const ResetPasswordPage({super.key, required this.email});
 
   @override
   ConsumerState<ResetPasswordPage> createState() => _ResetPasswordPageState();
@@ -17,6 +18,7 @@ class ResetPasswordPage extends ConsumerStatefulWidget {
 
 class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   final _formKey = GlobalKey<FormState>();
+  final _otpController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
@@ -24,35 +26,26 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
 
   @override
   void dispose() {
+    _otpController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      if (_passwordController.text != _confirmPasswordController.text) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
-        return;
-      }
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-      final success = await ref
-          .read(authProvider.notifier)
-          .resetPassword(
-            token: 'mock_token',
-            newPassword: _passwordController.text,
-          );
-
-      if (success && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password updated successfully. Please sign in.'),
-          ),
+    final success = await ref.read(authProvider.notifier).resetPassword(
+          email: widget.email,
+          otp: _otpController.text.trim(),
+          newPassword: _passwordController.text,
         );
-        context.go('/login');
-      }
+
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password updated successfully. Please sign in.')),
+      );
+      context.go('/login');
     }
   }
 
@@ -78,10 +71,22 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                   children: [
                     const AuthHeader(
                       title: 'Set New Password',
-                      subtitle:
-                          'Choose a strong password to protect your account',
+                      subtitle: 'Enter the OTP sent to your email and choose a new password',
                     ),
                     const SizedBox(height: 28),
+                    AppTextField(
+                      label: 'OTP',
+                      hint: '6-digit OTP',
+                      controller: _otpController,
+                      keyboardType: TextInputType.number,
+                      prefixIcon: const Icon(Icons.pin_outlined, size: 20),
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return 'Please enter the OTP';
+                        if (v.length != 6) return 'OTP must be 6 digits';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
                     AppTextField(
                       label: 'New Password',
                       hint: '••••••••',
@@ -91,16 +96,10 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                       prefixIcon: const Icon(Icons.lock_outline, size: 20),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
+                          _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                           size: 20,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
+                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -110,27 +109,17 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                       controller: _confirmPasswordController,
                       obscureText: _obscureConfirmPassword,
                       validator: (v) {
-                        if (v == null || v.isEmpty) {
-                          return 'Please confirm your password';
-                        }
-                        if (v != _passwordController.text) {
-                          return 'Passwords do not match';
-                        }
+                        if (v == null || v.isEmpty) return 'Please confirm your password';
+                        if (v != _passwordController.text) return 'Passwords do not match';
                         return null;
                       },
                       prefixIcon: const Icon(Icons.lock_outline, size: 20),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
+                          _obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                           size: 20,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
+                        onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
                       ),
                       onFieldSubmitted: (_) => _submit(),
                     ),

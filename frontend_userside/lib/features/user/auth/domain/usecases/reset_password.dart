@@ -5,7 +5,11 @@ class ResetPasswordUseCase {
 
   ResetPasswordUseCase(this.repository);
 
-  Future<void> call({required String token, required String newPassword}) {
-    return repository.resetPassword(token: token, newPassword: newPassword);
+  Future<void> call({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) {
+    return repository.resetPassword(email: email, otp: otp, newPassword: newPassword);
   }
 }

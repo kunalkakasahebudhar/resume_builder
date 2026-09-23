@@ -2,16 +2,19 @@ package auth
 
 import (
 	apperrors "resume_builder/common/errors"
+	"resume_builder/common/config"
 	"resume_builder/common/utils"
 	"resume_builder/internal/auth/models"
+	"time"
 )
 
 type service struct {
-	repo Repository
+	repo     Repository
+	emailSvc EmailService
 }
 
-func NewService(repo Repository) Service {
-	return &service{repo: repo}
+func NewService(repo Repository, emailSvc EmailService) Service {
+	return &service{repo: repo, emailSvc: emailSvc}
 }
 
 func (s *service) Register(req *models.RegisterRequest) (*models.AuthResponse, error) {
@@ -57,16 +60,43 @@ func (s *service) ForgotPassword(req *models.ForgotPasswordRequest) error {
 	if err != nil {
 		return apperrors.ErrNotFound
 	}
+
+	otp, err := utils.GenerateOTP()
+	if err != nil {
+		return apperrors.ErrInternalServer
+	}
+
+	// delete old OTPs for this email
+	_ = s.repo.DeleteOTPsByEmail(req.Email)
+
+	record := &models.UserOTP{
+		Email:     req.Email,
+		OTP:       otp,
+		ExpiresAt: time.Now().Add(time.Duration(config.App.OTPExpiryMinutes) * time.Minute),
+	}
+	if err := s.repo.SaveOTP(record); err != nil {
+		return apperrors.ErrInternalServer
+	}
+
+	if err := s.emailSvc.SendOTP(req.Email, otp); err != nil {
+		return apperrors.ErrInternalServer
+	}
+
 	return nil
 }
 
 func (s *service) ResetPassword(req *models.ResetPasswordRequest) error {
-	claims, err := utils.ValidateToken(req.Token)
+	record, err := s.repo.FindOTP(req.Email, req.OTP)
 	if err != nil {
 		return apperrors.ErrTokenInvalid
 	}
 
-	user, err := s.repo.FindUserByEmail(claims.Email)
+	if time.Now().After(record.ExpiresAt) {
+		_ = s.repo.DeleteOTPsByEmail(req.Email)
+		return apperrors.ErrTokenInvalid
+	}
+
+	user, err := s.repo.FindUserByEmail(req.Email)
 	if err != nil {
 		return apperrors.ErrNotFound
 	}
@@ -77,7 +107,12 @@ func (s *service) ResetPassword(req *models.ResetPasswordRequest) error {
 	}
 
 	user.Password = hashed
-	return s.repo.UpdateUser(user)
+	if err := s.repo.UpdateUser(user); err != nil {
+		return apperrors.ErrInternalServer
+	}
+
+	_ = s.repo.DeleteOTPsByEmail(req.Email)
+	return nil
 }
 
 func (s *service) RefreshToken(req *models.RefreshTokenRequest) (*models.AuthResponse, error) {

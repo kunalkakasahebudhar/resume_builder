@@ -7,6 +7,9 @@ type Repository interface {
 	FindUserByEmail(email string) (*models.User, error)
 	FindUserByID(id uint) (*models.User, error)
 	UpdateUser(user *models.User) error
+	SaveOTP(otp *models.UserOTP) error
+	FindOTP(email, otp string) (*models.UserOTP, error)
+	DeleteOTPsByEmail(email string) error
 }
 
 type Service interface {

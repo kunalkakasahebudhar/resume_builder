@@ -32,3 +32,17 @@ func (r *repository) FindUserByID(id uint) (*models.User, error) {
 func (r *repository) UpdateUser(user *models.User) error {
 	return r.db.Save(user).Error
 }
+
+func (r *repository) SaveOTP(otp *models.UserOTP) error {
+	return r.db.Create(otp).Error
+}
+
+func (r *repository) FindOTP(email, otp string) (*models.UserOTP, error) {
+	var record models.UserOTP
+	err := r.db.Where("email = ? AND otp = ?", email, otp).First(&record).Error
+	return &record, err
+}
+
+func (r *repository) DeleteOTPsByEmail(email string) error {
+	return r.db.Where("email = ?", email).Delete(&models.UserOTP{}).Error
+}

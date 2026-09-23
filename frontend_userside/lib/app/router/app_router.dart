@@ -98,7 +98,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/reset-password',
-        builder: (context, state) => const ResetPasswordPage(),
+        builder: (context, state) {
+          final email = state.extra as String? ?? '';
+          return ResetPasswordPage(email: email);
+        },
       ),
       GoRoute(
         path: '/dashboard',

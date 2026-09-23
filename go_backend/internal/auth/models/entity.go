@@ -19,6 +19,16 @@ type User struct {
 
 func (User) TableName() string { return "users" }
 
+type UserOTP struct {
+	ID        uint      `gorm:"primaryKey;autoIncrement"`
+	Email     string    `gorm:"size:150;not null;index"`
+	OTP       string    `gorm:"size:6;not null"`
+	ExpiresAt time.Time `gorm:"not null"`
+	CreatedAt time.Time
+}
+
+func (UserOTP) TableName() string { return "user_otps" }
+
 const (
 	StatusActive  = "active"
 	StatusPending = "pending"

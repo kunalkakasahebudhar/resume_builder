@@ -33,7 +33,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   Future<User> login(String email, String password) async {
     try {
       final data = await remoteDataSource.login(email, password);
-      return _handleAuthResponse(data);
+      return await _handleAuthResponse(data);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
@@ -53,7 +53,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
         email: email,
         password: password,
       );
-      return _handleAuthResponse(data);
+      return await _handleAuthResponse(data);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
@@ -83,11 +83,12 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
 
   @override
   Future<void> resetPassword({
-    required String token,
+    required String email,
+    required String otp,
     required String newPassword,
   }) async {
     try {
-      await remoteDataSource.resetPassword(token: token, newPassword: newPassword);
+      await remoteDataSource.resetPassword(email: email, otp: otp, newPassword: newPassword);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
