@@ -26,7 +26,7 @@ func (s *service) Register(req *models.RegisterRequest) (*models.AuthResponse, e
 	}
 
 	user := &models.User{
-		Name:       req.Name,
+		FullName:   req.FullName,
 		Email:      req.Email,
 		Password:   hashed,
 		Status:     models.StatusActive,
@@ -61,7 +61,12 @@ func (s *service) ForgotPassword(req *models.ForgotPasswordRequest) error {
 }
 
 func (s *service) ResetPassword(req *models.ResetPasswordRequest) error {
-	user, err := s.repo.FindUserByEmail(req.Email)
+	claims, err := utils.ValidateToken(req.Token)
+	if err != nil {
+		return apperrors.ErrTokenInvalid
+	}
+
+	user, err := s.repo.FindUserByEmail(claims.Email)
 	if err != nil {
 		return apperrors.ErrNotFound
 	}
@@ -87,6 +92,10 @@ func (s *service) RefreshToken(req *models.RefreshTokenRequest) (*models.AuthRes
 	}
 
 	return s.generateAuthResponse(user)
+}
+
+func (s *service) Logout() error {
+	return nil
 }
 
 func (s *service) generateAuthResponse(user *models.User) (*models.AuthResponse, error) {

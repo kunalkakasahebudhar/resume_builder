@@ -72,6 +72,14 @@ func (h *Handler) ResetPassword(c *gin.Context) {
 	utils.SendSuccess(c, http.StatusOK, constants.MsgPasswordReset, nil)
 }
 
+func (h *Handler) Logout(c *gin.Context) {
+	if err := h.svc.Logout(); err != nil {
+		apperrors.Handle(c, err)
+		return
+	}
+	utils.SendSuccess(c, http.StatusOK, constants.MsgSuccess, nil)
+}
+
 func (h *Handler) RefreshToken(c *gin.Context) {
 	var req models.RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

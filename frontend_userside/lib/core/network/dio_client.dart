@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:frontend_userside/app/constants/api_constants.dart';
+import 'package:frontend_userside/config/backend_config.dart';
 import 'package:frontend_userside/core/error/exceptions.dart';
 import 'package:frontend_userside/core/storage/local_storage.dart';
 
@@ -11,7 +11,7 @@ class DioClient {
     : _localStorage = localStorage ?? LocalStorage() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: ApiConstants.baseUrl,
+        baseUrl: BackendConfig.baseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {

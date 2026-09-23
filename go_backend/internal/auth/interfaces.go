@@ -15,4 +15,5 @@ type Service interface {
 	ForgotPassword(req *models.ForgotPasswordRequest) error
 	ResetPassword(req *models.ResetPasswordRequest) error
 	RefreshToken(req *models.RefreshTokenRequest) (*models.AuthResponse, error)
+	Logout() error
 }

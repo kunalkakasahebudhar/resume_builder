@@ -1,8 +1,11 @@
-abstract class Failure {
+abstract class Failure implements Exception {
   final String message;
   final int? statusCode;
 
   const Failure({required this.message, this.statusCode});
+
+  @override
+  String toString() => message;
 
   @override
   bool operator ==(Object other) =>

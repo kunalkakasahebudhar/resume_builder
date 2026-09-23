@@ -1,10 +1,11 @@
+import 'package:frontend_userside/config/backend_config.dart';
 import 'package:frontend_userside/core/error/exceptions.dart';
 import 'package:frontend_userside/core/network/dio_client.dart';
 import 'package:frontend_userside/features/user/auth/data/models/user_model.dart';
 
 abstract class UserAuthRemoteDataSource {
-  Future<UserModel> login(String email, String password);
-  Future<UserModel> register({
+  Future<Map<String, dynamic>> login(String email, String password);
+  Future<Map<String, dynamic>> register({
     required String fullName,
     required String email,
     required String password,
@@ -18,80 +19,58 @@ abstract class UserAuthRemoteDataSource {
 }
 
 class UserAuthRemoteDataSourceImpl implements UserAuthRemoteDataSource {
-  final DioClient? dioClient;
+  final DioClient dioClient;
 
-  UserAuthRemoteDataSourceImpl({this.dioClient});
-
-  // Mock User Data for Phase 1
-  static const String demoEmail = 'user@resumeforge.com';
-  static const String demoPassword = 'User@123';
+  UserAuthRemoteDataSourceImpl({required this.dioClient});
 
   @override
-  Future<UserModel> login(String email, String password) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    final normalizedEmail = email.trim().toLowerCase();
-
-    // Accept demo credentials or any validly formatted test input for seamless development
-    if (normalizedEmail == demoEmail.toLowerCase()) {
-      if (password == demoPassword) {
-        return UserModel(
-          id: 'usr_01HXYZ789',
-          email: demoEmail,
-          fullName: 'Alex Morgan',
-          avatarUrl: null,
-          createdAt: DateTime.now().subtract(const Duration(days: 30)),
-        );
-      } else {
-        throw const AuthException(
-          message: 'Invalid password. Hint: $demoPassword',
-        );
-      }
-    } else if (password.length >= 6) {
-      // Allow flexible test logins
-      return UserModel(
-        id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
-        email: normalizedEmail,
-        fullName: normalizedEmail.split('@').first,
-        avatarUrl: null,
-        createdAt: DateTime.now(),
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    try {
+      final response = await dioClient.post(
+        BackendConfig.login,
+        data: {'email': email, 'password': password},
       );
-    } else {
-      throw const AuthException(message: 'Invalid email or password.');
+      final data = response.data as Map<String, dynamic>;
+      return data['data'] as Map<String, dynamic>;
+    } on ServerException catch (e) {
+      throw AuthException(message: e.message);
     }
   }
 
   @override
-  Future<UserModel> register({
+  Future<Map<String, dynamic>> register({
     required String fullName,
     required String email,
     required String password,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    if (email.trim().isEmpty || password.length < 6) {
-      throw const AuthException(message: 'Invalid registration details');
+    try {
+      final response = await dioClient.post(
+        BackendConfig.register,
+        data: {'full_name': fullName, 'email': email, 'password': password},
+      );
+      final data = response.data as Map<String, dynamic>;
+      return data['data'] as Map<String, dynamic>;
+    } on ServerException catch (e) {
+      throw AuthException(message: e.message);
     }
-
-    return UserModel(
-      id: 'usr_${DateTime.now().millisecondsSinceEpoch}',
-      email: email.trim(),
-      fullName: fullName.trim(),
-      createdAt: DateTime.now(),
-    );
   }
 
   @override
   Future<void> logout() async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    try {
+      await dioClient.post(BackendConfig.logout);
+    } catch (_) {}
   }
 
   @override
   Future<void> forgotPassword(String email) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (email.trim().isEmpty) {
-      throw const AuthException(message: 'Please enter a valid email');
+    try {
+      await dioClient.post(
+        BackendConfig.forgotPassword,
+        data: {'email': email},
+      );
+    } on ServerException catch (e) {
+      throw AuthException(message: e.message);
     }
   }
 
@@ -100,11 +79,13 @@ class UserAuthRemoteDataSourceImpl implements UserAuthRemoteDataSource {
     required String token,
     required String newPassword,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (newPassword.length < 6) {
-      throw const AuthException(
-        message: 'Password must be at least 6 characters',
+    try {
+      await dioClient.post(
+        BackendConfig.resetPassword,
+        data: {'token': token, 'new_password': newPassword},
       );
+    } on ServerException catch (e) {
+      throw AuthException(message: e.message);
     }
   }
 }

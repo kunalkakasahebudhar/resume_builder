@@ -17,9 +17,10 @@ func Handle(c *gin.Context, err error) {
 	case errors.Is(err, ErrForbidden):
 		utils.SendError(c, http.StatusForbidden, err.Error())
 	case errors.Is(err, ErrBadRequest), errors.Is(err, ErrEmailExists),
-		errors.Is(err, ErrInvalidCredentials), errors.Is(err, ErrOTPInvalid),
-		errors.Is(err, ErrAccountNotVerified):
+		errors.Is(err, ErrOTPInvalid), errors.Is(err, ErrAccountNotVerified):
 		utils.SendError(c, http.StatusBadRequest, err.Error())
+	case errors.Is(err, ErrInvalidCredentials):
+		utils.SendError(c, http.StatusUnauthorized, err.Error())
 	default:
 		utils.SendError(c, http.StatusInternalServerError, ErrInternalServer.Error())
 	}

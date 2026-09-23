@@ -8,7 +8,7 @@ type AuthResponse struct {
 
 type UserInfo struct {
 	ID         uint   `json:"id"`
-	Name       string `json:"name"`
+	FullName   string `json:"full_name"`
 	Email      string `json:"email"`
 	IsVerified bool   `json:"is_verified"`
 	Status     string `json:"status"`

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend_userside/core/error/failures.dart';
 import 'package:frontend_userside/core/network/dio_client.dart';
 import 'package:frontend_userside/core/storage/local_storage.dart';
 import 'package:frontend_userside/features/user/auth/data/datasources/user_auth_remote_datasource.dart';
@@ -18,9 +19,7 @@ final dioClientProvider = Provider<DioClient>(
 );
 
 // Auth Dependency Providers
-final userAuthRemoteDataSourceProvider = Provider<UserAuthRemoteDataSource>((
-  ref,
-) {
+final userAuthRemoteDataSourceProvider = Provider<UserAuthRemoteDataSource>((ref) {
   return UserAuthRemoteDataSourceImpl(dioClient: ref.watch(dioClientProvider));
 });
 
@@ -127,10 +126,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: e
-            .toString()
-            .replaceAll('AuthFailure: ', '')
-            .replaceAll('Exception: ', ''),
+        errorMessage: e is Failure ? e.message : e.toString(),
       );
       return false;
     }
@@ -153,10 +149,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: e
-            .toString()
-            .replaceAll('AuthFailure: ', '')
-            .replaceAll('Exception: ', ''),
+        errorMessage: e is Failure ? e.message : e.toString(),
       );
       return false;
     }
@@ -180,10 +173,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: e
-            .toString()
-            .replaceAll('AuthFailure: ', '')
-            .replaceAll('Exception: ', ''),
+        errorMessage: e is Failure ? e.message : e.toString(),
       );
       return false;
     }
@@ -201,10 +191,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: e
-            .toString()
-            .replaceAll('AuthFailure: ', '')
-            .replaceAll('Exception: ', ''),
+        errorMessage: e is Failure ? e.message : e.toString(),
       );
       return false;
     }

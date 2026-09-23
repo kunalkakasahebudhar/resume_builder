@@ -15,13 +15,25 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
     required this.localStorage,
   });
 
+  Future<User> _handleAuthResponse(Map<String, dynamic> data) async {
+    final token = data['access_token'] as String? ?? '';
+    final userMap = data['user'] as Map<String, dynamic>? ?? {};
+    final userModel = UserModel.fromJson({
+      'id': userMap['id']?.toString() ?? '',
+      'email': userMap['email'],
+      'full_name': userMap['full_name'],
+      'created_at': userMap['created_at'],
+    });
+    await localStorage.saveToken(token);
+    await localStorage.saveUserData(userModel.toJsonString());
+    return userModel;
+  }
+
   @override
   Future<User> login(String email, String password) async {
     try {
-      final userModel = await remoteDataSource.login(email, password);
-      await localStorage.saveToken('mock_jwt_token_${userModel.id}');
-      await localStorage.saveUserData(userModel.toJsonString());
-      return userModel;
+      final data = await remoteDataSource.login(email, password);
+      return _handleAuthResponse(data);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
@@ -36,14 +48,12 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
     required String password,
   }) async {
     try {
-      final userModel = await remoteDataSource.register(
+      final data = await remoteDataSource.register(
         fullName: fullName,
         email: email,
         password: password,
       );
-      await localStorage.saveToken('mock_jwt_token_${userModel.id}');
-      await localStorage.saveUserData(userModel.toJsonString());
-      return userModel;
+      return _handleAuthResponse(data);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
@@ -55,8 +65,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   Future<void> logout() async {
     try {
       await remoteDataSource.logout();
-      await localStorage.clearAuth();
-    } catch (e) {
+    } finally {
       await localStorage.clearAuth();
     }
   }
@@ -78,10 +87,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
     required String newPassword,
   }) async {
     try {
-      await remoteDataSource.resetPassword(
-        token: token,
-        newPassword: newPassword,
-      );
+      await remoteDataSource.resetPassword(token: token, newPassword: newPassword);
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message);
     } catch (e) {
@@ -98,7 +104,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
         return UserModel.fromJsonString(userJson);
       }
       return null;
-    } catch (e) {
+    } catch (_) {
       return null;
     }
   }
