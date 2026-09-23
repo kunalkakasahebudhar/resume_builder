@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:frontend_admin/features/admin/ai_ops/presentation/pages/ai_ops_page.dart';
 import 'package:frontend_admin/features/admin/analytics/presentation/pages/ats_analytics_page.dart';
+import 'package:frontend_admin/features/admin/ats_rubric/presentation/pages/ats_rubric_page.dart';
+import 'package:frontend_admin/features/admin/audit_logs/presentation/pages/audit_logs_page.dart';
 import 'package:frontend_admin/features/admin/auth/presentation/pages/admin_login_page.dart';
 import 'package:frontend_admin/features/admin/auth/presentation/providers/admin_auth_provider.dart';
+import 'package:frontend_admin/features/admin/billing/presentation/pages/billing_page.dart';
 import 'package:frontend_admin/features/admin/dashboard/presentation/pages/admin_dashboard_page.dart';
+import 'package:frontend_admin/features/admin/moderation/presentation/pages/moderation_page.dart';
+import 'package:frontend_admin/features/admin/notifications/presentation/pages/admin_notifications_page.dart';
 import 'package:frontend_admin/features/admin/profile/presentation/pages/admin_profile_page.dart';
 import 'package:frontend_admin/features/admin/resumes/presentation/pages/admin_resumes_page.dart';
+import 'package:frontend_admin/features/admin/settings/presentation/pages/settings_page.dart';
 import 'package:frontend_admin/features/admin/templates/presentation/pages/template_form_page.dart';
 import 'package:frontend_admin/features/admin/templates/presentation/pages/templates_page.dart';
 import 'package:frontend_admin/features/admin/users/presentation/pages/user_details_page.dart';
 import 'package:frontend_admin/features/admin/users/presentation/pages/users_page.dart';
-import 'package:go_router/go_router.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authNotifier = ref.watch(adminAuthProvider.notifier);
@@ -82,6 +89,34 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             },
           ),
         ],
+      ),
+      GoRoute(
+        path: '/admin/ai-ops',
+        builder: (context, state) => const AiOpsPage(),
+      ),
+      GoRoute(
+        path: '/admin/ats-rubric',
+        builder: (context, state) => const AtsRubricPage(),
+      ),
+      GoRoute(
+        path: '/admin/billing',
+        builder: (context, state) => const BillingPage(),
+      ),
+      GoRoute(
+        path: '/admin/moderation',
+        builder: (context, state) => const ModerationPage(),
+      ),
+      GoRoute(
+        path: '/admin/notifications',
+        builder: (context, state) => const AdminNotificationsPage(),
+      ),
+      GoRoute(
+        path: '/admin/settings',
+        builder: (context, state) => const SettingsPage(),
+      ),
+      GoRoute(
+        path: '/admin/audit-logs',
+        builder: (context, state) => const AuditLogsPage(),
       ),
       GoRoute(
         path: '/admin/analytics',

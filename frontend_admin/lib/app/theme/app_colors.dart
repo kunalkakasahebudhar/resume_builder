@@ -46,4 +46,39 @@ class AppColors {
   static const Color sidebarHover = Color(0xFF1E293B);
   static const Color sidebarText = Color(0xFF94A3B8);
   static const Color sidebarTextActive = Color(0xFFFFFFFF);
+
+  // Dynamic Theme Resolvers
+  static Color background(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? backgroundDark
+          : backgroundLight;
+
+  static Color surface(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? surfaceDark
+          : surfaceLight;
+
+  static Color card(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark ? cardDark : cardLight;
+
+  static Color border(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? borderDark
+          : borderLight;
+
+  static Color textPrimary(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? textPrimaryDark
+          : textPrimaryLight;
+
+  static Color textSecondary(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? textSecondaryDark
+          : textSecondaryLight;
+
+  static Color textMuted(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? textMutedDark
+          : textMutedLight;
 }
+

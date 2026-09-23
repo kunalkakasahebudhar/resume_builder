@@ -24,15 +24,15 @@ class UserFilter extends StatelessWidget {
         return ChoiceChip(
           label: Text(status),
           labelStyle: AppTextStyles.badge(
-            color: isSelected ? Colors.white : AppColors.textSecondaryLight,
+            color: isSelected ? Colors.white : AppColors.textSecondary(context),
           ),
           selected: isSelected,
           selectedColor: AppColors.primary,
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.card(context),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
-              color: isSelected ? AppColors.primary : AppColors.borderLight,
+              color: isSelected ? AppColors.primary : AppColors.border(context),
             ),
           ),
           showCheckmark: false,

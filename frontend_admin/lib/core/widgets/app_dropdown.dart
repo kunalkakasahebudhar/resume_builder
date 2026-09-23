@@ -31,8 +31,8 @@ class AppDropdown<T> extends StatelessWidget {
           initialValue: value,
           items: items,
           onChanged: onChanged,
-          style: AppTextStyles.bodyMedium(color: AppColors.textPrimaryLight),
-          dropdownColor: Colors.white,
+          style: AppTextStyles.bodyMedium(color: AppColors.textPrimary(context)),
+          dropdownColor: AppColors.card(context),
           decoration: InputDecoration(
             hintText: hintText,
             contentPadding: const EdgeInsets.symmetric(

@@ -201,8 +201,11 @@ class LandingFooter extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 16,
+                runSpacing: 8,
                 children: [
                   Text(
                     '© ${DateTime.now().year} ResumeForge. Built with Flutter & Riverpod.',

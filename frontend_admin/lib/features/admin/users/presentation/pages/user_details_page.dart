@@ -77,79 +77,107 @@ class _UserDetailsPageState extends ConsumerState<UserDetailsPage> {
                       // Profile Hero Card
                       Card(
                         elevation: 0,
-                        color: Colors.white,
+                        color: AppColors.card(context),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: AppColors.borderLight),
+                          side: BorderSide(color: AppColors.border(context)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(24.0),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 36,
-                                backgroundColor: AppColors.primaryContainer,
-                                child: Text(
-                                  user.name.isNotEmpty
-                                      ? user.name[0].toUpperCase()
-                                      : 'U',
-                                  style: AppTextStyles.h1(
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          user.name,
-                                          style: AppTextStyles.h2(),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        UserStatusBadge(status: user.status),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      user.email,
-                                      style: AppTextStyles.bodyMedium(),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      'Member since ${AppDateUtils.formatDate(user.createdAt)} • Last active ${AppDateUtils.timeAgo(user.lastActive)}',
-                                      style: AppTextStyles.bodySmall(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // Action Buttons
-                              Wrap(
-                                spacing: 8,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final isWide = constraints.maxWidth > 700;
+                              return Flex(
+                                direction:
+                                    isWide ? Axis.horizontal : Axis.vertical,
+                                crossAxisAlignment: isWide
+                                    ? CrossAxisAlignment.center
+                                    : CrossAxisAlignment.start,
                                 children: [
-                                  if (user.status != 'Active')
-                                    AppButton(
-                                      text: 'Activate Account',
-                                      variant: AppButtonVariant.primary,
-                                      onPressed: () async {
-                                        await ref
-                                            .read(adminUsersProvider.notifier)
-                                            .updateUserStatus(
-                                              user.id,
-                                              'Active',
-                                            );
-                                      },
-                                    ),
-                                  if (user.status == 'Active')
-                                    AppButton(
-                                      text: 'Deactivate',
-                                      variant: AppButtonVariant.outline,
-                                      onPressed: () async {
-                                        final confirm =
-                                            await AppDialog.showConfirmation(
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 36,
+                                        backgroundColor:
+                                            AppColors.primaryContainer,
+                                        child: Text(
+                                          user.name.isNotEmpty
+                                              ? user.name[0].toUpperCase()
+                                              : 'U',
+                                          style: AppTextStyles.h1(
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    user.name,
+                                                    style: AppTextStyles.h2(),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 12),
+                                                UserStatusBadge(
+                                                    status: user.status),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              user.email,
+                                              style: AppTextStyles.bodyMedium(
+                                                color: AppColors.textSecondary(
+                                                    context),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 6),
+                                            Text(
+                                              'Member since ${AppDateUtils.formatDate(user.createdAt)} • Last active ${AppDateUtils.timeAgo(user.lastActive)}',
+                                              style: AppTextStyles.bodySmall(
+                                                color: AppColors.textSecondary(
+                                                    context),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: isWide ? 16 : 0,
+                                      height: isWide ? 0 : 16),
+                                  // Action Buttons
+                                  Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    children: [
+                                      if (user.status != 'Active')
+                                        AppButton(
+                                          text: 'Activate Account',
+                                          variant: AppButtonVariant.primary,
+                                          onPressed: () async {
+                                            await ref
+                                                .read(adminUsersProvider
+                                                    .notifier)
+                                                .updateUserStatus(
+                                                  user.id,
+                                                  'Active',
+                                                );
+                                          },
+                                        ),
+                                      if (user.status == 'Active')
+                                        AppButton(
+                                          text: 'Deactivate',
+                                          variant: AppButtonVariant.outline,
+                                          onPressed: () async {
+                                            final confirm = await AppDialog
+                                                .showConfirmation(
                                               context: context,
                                               title: 'Deactivate User',
                                               message:
@@ -157,22 +185,23 @@ class _UserDetailsPageState extends ConsumerState<UserDetailsPage> {
                                               confirmText: 'Deactivate',
                                               isDanger: true,
                                             );
-                                        if (confirm == true) {
-                                          await ref
-                                              .read(adminUsersProvider.notifier)
-                                              .updateUserStatus(
-                                                user.id,
-                                                'Inactive',
-                                              );
-                                        }
-                                      },
-                                    ),
-                                  AppButton(
-                                    text: 'Delete User',
-                                    variant: AppButtonVariant.danger,
-                                    onPressed: () async {
-                                      final confirm =
-                                          await AppDialog.showConfirmation(
+                                            if (confirm == true) {
+                                              await ref
+                                                  .read(adminUsersProvider
+                                                      .notifier)
+                                                  .updateUserStatus(
+                                                    user.id,
+                                                    'Inactive',
+                                                  );
+                                            }
+                                          },
+                                        ),
+                                      AppButton(
+                                        text: 'Delete User',
+                                        variant: AppButtonVariant.danger,
+                                        onPressed: () async {
+                                          final confirm = await AppDialog
+                                              .showConfirmation(
                                             context: context,
                                             title: 'Delete User Permanently',
                                             message:
@@ -180,152 +209,166 @@ class _UserDetailsPageState extends ConsumerState<UserDetailsPage> {
                                             confirmText: 'Delete',
                                             isDanger: true,
                                           );
-                                      if (confirm == true) {
-                                        final success = await ref
-                                            .read(adminUsersProvider.notifier)
-                                            .deleteUser(user.id);
-                                        if (success && context.mounted) {
-                                          context.go('/admin/users');
-                                        }
-                                      }
-                                    },
+                                          if (confirm == true) {
+                                            final success = await ref
+                                                .read(adminUsersProvider
+                                                    .notifier)
+                                                .deleteUser(user.id);
+                                            if (success && context.mounted) {
+                                              context.go('/admin/users');
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
 
                       // User Details Grid
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Contact & Social Details
-                          Expanded(
-                            flex: 3,
-                            child: Card(
-                              elevation: 0,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                  color: AppColors.borderLight,
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isWide = constraints.maxWidth > 750;
+                          return Flex(
+                            direction: isWide ? Axis.horizontal : Axis.vertical,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Contact & Social Details
+                              Expanded(
+                                flex: isWide ? 3 : 0,
+                                child: Card(
+                                  elevation: 0,
+                                  color: AppColors.card(context),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(
+                                      color: AppColors.border(context),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(24.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Contact & Profile Links',
+                                          style: AppTextStyles.h3(),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        _buildDetailRow(
+                                          Icons.phone_outlined,
+                                          'Phone',
+                                          user.phone ?? 'Not provided',
+                                        ),
+                                        const Divider(height: 24),
+                                        _buildDetailRow(
+                                          Icons.link_rounded,
+                                          'LinkedIn',
+                                          user.linkedIn ?? 'Not linked',
+                                        ),
+                                        const Divider(height: 24),
+                                        _buildDetailRow(
+                                          Icons.code_rounded,
+                                          'GitHub',
+                                          user.github ?? 'Not linked',
+                                        ),
+                                        const Divider(height: 24),
+                                        _buildDetailRow(
+                                          Icons.language_rounded,
+                                          'Portfolio',
+                                          user.portfolio ?? 'Not provided',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(24.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Contact & Profile Links',
-                                      style: AppTextStyles.h3(),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    _buildDetailRow(
-                                      Icons.phone_outlined,
-                                      'Phone',
-                                      user.phone ?? 'Not provided',
-                                    ),
-                                    const Divider(height: 24),
-                                    _buildDetailRow(
-                                      Icons.link_rounded,
-                                      'LinkedIn',
-                                      user.linkedIn ?? 'Not linked',
-                                    ),
-                                    const Divider(height: 24),
-                                    _buildDetailRow(
-                                      Icons.code_rounded,
-                                      'GitHub',
-                                      user.github ?? 'Not linked',
-                                    ),
-                                    const Divider(height: 24),
-                                    _buildDetailRow(
-                                      Icons.language_rounded,
-                                      'Portfolio',
-                                      user.portfolio ?? 'Not provided',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
+                              SizedBox(
+                                  width: isWide ? 20 : 0,
+                                  height: isWide ? 0 : 20),
 
-                          // Resume Stats
-                          Expanded(
-                            flex: 2,
-                            child: Card(
-                              elevation: 0,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                  color: AppColors.borderLight,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(24.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Resume Activity',
-                                      style: AppTextStyles.h3(),
+                              // Resume Stats
+                              Expanded(
+                                flex: isWide ? 2 : 0,
+                                child: Card(
+                                  elevation: 0,
+                                  color: AppColors.card(context),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(
+                                      color: AppColors.border(context),
                                     ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryContainer,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.description_outlined,
-                                            color: AppColors.primary,
-                                            size: 28,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(24.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Resume Activity',
+                                          style: AppTextStyles.h3(),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Container(
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryContainer,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          const SizedBox(width: 14),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          child: Row(
                                             children: [
-                                              Text(
-                                                '${user.resumesCount} Resumes Created',
-                                                style:
-                                                    AppTextStyles.titleMedium(
+                                              const Icon(
+                                                Icons.description_outlined,
+                                                color: AppColors.primary,
+                                                size: 28,
+                                              ),
+                                              const SizedBox(width: 14),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '${user.resumesCount} Resumes Created',
+                                                    style: AppTextStyles
+                                                        .titleMedium(
                                                       color:
                                                           AppColors.primaryDark,
                                                     ),
-                                              ),
-                                              Text(
-                                                'ATS-ready documents',
-                                                style:
-                                                    AppTextStyles.bodySmall(),
+                                                  ),
+                                                  Text(
+                                                    'ATS-ready documents',
+                                                    style: AppTextStyles
+                                                        .bodySmall(),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        AppButton(
+                                          text: 'View User Resumes',
+                                          variant: AppButtonVariant.outline,
+                                          width: double.infinity,
+                                          onPressed: () =>
+                                              context.go('/admin/resumes'),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 16),
-                                    AppButton(
-                                      text: 'View User Resumes',
-                                      variant: AppButtonVariant.outline,
-                                      width: double.infinity,
-                                      onPressed: () =>
-                                          context.go('/admin/resumes'),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -340,13 +383,13 @@ class _UserDetailsPageState extends ConsumerState<UserDetailsPage> {
   Widget _buildDetailRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: AppColors.textSecondaryLight),
+        Icon(icon, size: 20, color: AppColors.textSecondary(context)),
         const SizedBox(width: 12),
         Text(label, style: AppTextStyles.label()),
         const Spacer(),
         Text(
           value,
-          style: AppTextStyles.bodyMedium(color: AppColors.textPrimaryLight),
+          style: AppTextStyles.bodyMedium(),
         ),
       ],
     );

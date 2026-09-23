@@ -4,6 +4,8 @@ import 'package:frontend_admin/app/theme/app_text_styles.dart';
 
 enum AppButtonVariant { primary, secondary, outline, danger }
 
+typedef ButtonVariant = AppButtonVariant;
+
 class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;

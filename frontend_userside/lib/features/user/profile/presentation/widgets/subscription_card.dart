@@ -211,24 +211,31 @@ class _SubscriptionCardState extends ConsumerState<SubscriptionCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Free Usage Quota',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                Flexible(
+                  child: Text(
+                    'Free Usage Quota',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Text(
-                  isExhausted
-                      ? '3 of 3 used (0 left)'
-                      : '${3 - usesLeft} of 3 used ($usesLeft remaining)',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isExhausted
-                        ? const Color(0xFFEF4444)
-                        : const Color(0xFF2563EB),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    isExhausted
+                        ? '3 of 3 used (0 left)'
+                        : '${3 - usesLeft} of 3 used ($usesLeft remaining)',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: isExhausted
+                          ? const Color(0xFFEF4444)
+                          : const Color(0xFF2563EB),
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -356,32 +363,38 @@ class _SubscriptionCardState extends ConsumerState<SubscriptionCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(Icons.check_circle_rounded,
                         color: Color(0xFF10B981), size: 18),
                     const SizedBox(width: 8),
-                    Text(
-                      'Unlimited PDF Exports & 11 ATS-Certified Templates Unlocked',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    Expanded(
+                      child: Text(
+                        'Unlimited PDF Exports & 11 ATS-Certified Templates Unlocked',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(Icons.check_circle_rounded,
                         color: Color(0xFF10B981), size: 18),
                     const SizedBox(width: 8),
-                    Text(
-                      '100-Point Full ATS Keyword Scanner & AI Suggestions',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    Expanded(
+                      child: Text(
+                        '100-Point Full ATS Keyword Scanner & AI Suggestions',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        ),
                       ),
                     ),
                   ],

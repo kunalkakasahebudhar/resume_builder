@@ -26,15 +26,20 @@ class AdminStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIconColor = iconColor ?? AppColors.primary;
-    final effectiveIconBgColor = iconBgColor ?? AppColors.primaryContainer;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final effectiveIconColor = iconColor ?? (isDark ? AppColors.primaryLight : AppColors.primary);
+    final effectiveIconBgColor = iconBgColor ??
+        (isDark ? const Color(0xFF312E81) : AppColors.primaryContainer);
 
     return Card(
       elevation: 0,
-      color: Colors.white,
+      color: isDark ? AppColors.cardDark : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: AppColors.borderLight, width: 1),
+        side: BorderSide(
+          color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          width: 1,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,7 +53,9 @@ class AdminStatCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: AppTextStyles.label(),
+                    style: AppTextStyles.label(
+                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -65,7 +72,7 @@ class AdminStatCard extends StatelessWidget {
             ),
             Text(
               value,
-              style: AppTextStyles.h2(color: AppColors.textPrimaryLight),
+              style: AppTextStyles.h2(),
             ),
             Row(
               children: [
@@ -88,7 +95,9 @@ class AdminStatCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       subtitle!,
-                      style: AppTextStyles.bodySmall(),
+                      style: AppTextStyles.bodySmall(
+                        color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

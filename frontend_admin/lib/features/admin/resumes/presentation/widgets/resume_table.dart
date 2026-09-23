@@ -44,7 +44,7 @@ class ResumeTable extends StatelessWidget {
             constraints: BoxConstraints(minWidth: constraints.maxWidth),
             child: DataTable(
               headingRowColor: WidgetStateProperty.all(
-                AppColors.backgroundLight,
+                AppColors.surface(context),
               ),
               horizontalMargin: 20,
               columnSpacing: 24,
@@ -106,7 +106,9 @@ class ResumeTable extends StatelessWidget {
                           ),
                           Text(
                             resume.userEmail,
-                            style: AppTextStyles.bodySmall(),
+                            style: AppTextStyles.bodySmall(
+                              color: AppColors.textSecondary(context),
+                            ),
                           ),
                         ],
                       ),
@@ -118,14 +120,14 @@ class ResumeTable extends StatelessWidget {
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.backgroundLight,
+                          color: AppColors.surface(context),
                           borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: AppColors.borderLight),
+                          border: Border.all(color: AppColors.border(context)),
                         ),
                         child: Text(
                           resume.templateName,
                           style: AppTextStyles.badge(
-                            color: AppColors.textPrimaryLight,
+                            color: AppColors.textPrimary(context),
                           ),
                         ),
                       ),

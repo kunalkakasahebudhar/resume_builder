@@ -124,17 +124,20 @@ class PdfPreviewPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 24),
                       Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.15),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                              ),
-                            ],
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.15),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: ResumeRenderer(resume: resume, scale: 0.9),
                           ),
-                          child: ResumeRenderer(resume: resume, scale: 0.9),
                         ),
                       ),
                     ],

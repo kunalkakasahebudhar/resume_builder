@@ -31,16 +31,16 @@ class _AdminProfileFormState extends State<AdminProfileForm> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(
-      text: widget.admin?.name ?? 'Alex Vance',
+      text: widget.admin?.name ?? 'Kunal Udhar',
     );
     _emailController = TextEditingController(
       text: widget.admin?.email ?? 'admin@resumeforge.com',
     );
     _phoneController = TextEditingController(
-      text: widget.admin?.phone ?? '+1 (555) 019-2834',
+      text: widget.admin?.phone ?? '+91 98765 43210',
     );
     _roleController = TextEditingController(
-      text: widget.admin?.role ?? 'Super Admin',
+      text: widget.admin?.role.displayName ?? 'Super Admin',
     );
   }
 

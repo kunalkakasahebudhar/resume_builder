@@ -16,6 +16,7 @@ class UsersPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final usersState = ref.watch(adminUsersProvider);
     final usersNotifier = ref.read(adminUsersProvider.notifier);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AdminLayout(
       title: 'Users Management',
@@ -28,10 +29,12 @@ class UsersPage extends ConsumerWidget {
             // Top Controls Card
             Card(
               elevation: 0,
-              color: Colors.white,
+              color: isDark ? AppColors.cardDark : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: AppColors.borderLight),
+                side: BorderSide(
+                  color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -80,10 +83,12 @@ class UsersPage extends ConsumerWidget {
             Expanded(
               child: Card(
                 elevation: 0,
-                color: Colors.white,
+                color: isDark ? AppColors.cardDark : Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: AppColors.borderLight),
+                  side: BorderSide(
+                    color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                  ),
                 ),
                 child: usersState.isLoading
                     ? const AppLoader(message: 'Loading registered users...')

@@ -108,7 +108,7 @@ class TemplateSelectionPage extends ConsumerWidget {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 360,
-                            mainAxisExtent: 390,
+                            mainAxisExtent: 430,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                           ),

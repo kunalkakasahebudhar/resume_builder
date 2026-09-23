@@ -100,75 +100,90 @@ class AtsAnalyticsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.card(context),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.borderLight),
+                border: Border.all(color: AppColors.border(context)),
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isWide = constraints.maxWidth > 700;
+                  return Flex(
+                    direction: isWide ? Axis.horizontal : Axis.vertical,
+                    crossAxisAlignment: isWide
+                        ? CrossAxisAlignment.center
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: isWide ? 1 : 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Transparent 100-Point ATS Engine',
-                              style: AppTextStyles.h2(),
-                            ),
-                            const SizedBox(width: 12),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.successLight,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                'PRD SPEC COMPLIANT',
-                                style: AppTextStyles.badge(
-                                  color: AppColors.success,
+                            Row(
+                              children: [
+                                Text(
+                                  'Transparent 100-Point ATS Engine',
+                                  style: AppTextStyles.h2(),
                                 ),
+                                const SizedBox(width: 12),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.successLight,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    'PRD SPEC COMPLIANT',
+                                    style: AppTextStyles.badge(
+                                      color: AppColors.success,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'Evaluates readability, section structure, keyword density, and formatting rules without bias.',
+                              style: AppTextStyles.bodyMedium(
+                                color: AppColors.textSecondary(context),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'Evaluates readability, section structure, keyword density, and formatting rules without bias.',
-                          style: AppTextStyles.bodyMedium(),
+                      ),
+                      SizedBox(width: isWide ? 16 : 0, height: isWide ? 0 : 16),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryContainer,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Average Overall Score',
-                          style: AppTextStyles.bodySmall(
-                            color: AppColors.primaryDark,
-                          ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryContainer,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        Text(
-                          '84.6 / 100',
-                          style: AppTextStyles.h1(color: AppColors.primary),
+                        child: Column(
+                          crossAxisAlignment: isWide
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Average Overall Score',
+                              style: AppTextStyles.bodySmall(
+                                color: AppColors.primaryDark,
+                              ),
+                            ),
+                            Text(
+                              '84.6 / 100',
+                              style: AppTextStyles.h1(color: AppColors.primary),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             const SizedBox(height: 24),

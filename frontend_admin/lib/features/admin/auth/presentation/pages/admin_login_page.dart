@@ -10,7 +10,7 @@ class AdminLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: AppColors.background(context),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -45,7 +45,7 @@ class AdminLoginPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'ResumeForge',
-                  style: AppTextStyles.h1(color: AppColors.textPrimaryLight),
+                  style: AppTextStyles.h1(color: AppColors.textPrimary(context)),
                 ),
                 const SizedBox(height: 6),
                 Row(
@@ -72,11 +72,11 @@ class AdminLoginPage extends StatelessWidget {
                 // Card with Login Form
                 Card(
                   elevation: 0,
-                  color: Colors.white,
+                  color: AppColors.card(context),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
-                    side: const BorderSide(
-                      color: AppColors.borderLight,
+                    side: BorderSide(
+                      color: AppColors.border(context),
                       width: 1,
                     ),
                   ),
@@ -108,9 +108,9 @@ class AdminLoginPage extends StatelessWidget {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.card(context),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.borderLight),
+                    border: Border.all(color: AppColors.border(context)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +124,7 @@ class AdminLoginPage extends StatelessWidget {
                       Text(
                         'Demo: admin@resumeforge.com / Admin@123',
                         style: AppTextStyles.bodySmall(
-                          color: AppColors.textSecondaryLight,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
                     ],

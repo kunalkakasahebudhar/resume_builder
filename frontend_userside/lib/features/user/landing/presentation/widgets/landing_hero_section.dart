@@ -101,13 +101,16 @@ class LandingHeroSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                '100% Single-Column Layouts • Zero ATS Parser Drops',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF6366F1),
-                  letterSpacing: -0.1,
+              const Flexible(
+                child: Text(
+                  '100% Single-Column Layouts • Zero ATS Parser Drops',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF6366F1),
+                    letterSpacing: -0.1,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -464,22 +467,29 @@ class LandingHeroSection extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'ALEXANDER MORGAN',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.5,
-                        color: isDark ? Colors.white : const Color(0xFF0F172A),
+                    Flexible(
+                      child: Text(
+                        'ALEXANDER MORGAN',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                          color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Text(
-                      'San Francisco, CA • alex@tech.io',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: isDark
-                            ? const Color(0xFF94A3B8)
-                            : const Color(0xFF64748B),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'San Francisco, CA • alex@tech.io',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: isDark
+                              ? const Color(0xFF94A3B8)
+                              : const Color(0xFF64748B),
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -549,17 +559,22 @@ class LandingHeroSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Harvard Grade Single-Column Format',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF64748B),
+              const Flexible(
+                child: Text(
+                  'Harvard Grade Single-Column Format',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF64748B),
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               InkWell(
                 onTap: onExploreTemplates,
                 child: const Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       'View 11+ templates',

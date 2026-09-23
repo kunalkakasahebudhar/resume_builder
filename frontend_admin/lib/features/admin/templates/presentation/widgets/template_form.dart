@@ -96,53 +96,66 @@ class _TemplateFormState extends State<TemplateForm> {
             validator: (v) => Validators.validateRequired(v, 'Description'),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: AppDropdown<String>(
-                  label: 'Category',
-                  value: _category,
-                  items: const [
-                    DropdownMenuItem(value: 'Classic', child: Text('Classic')),
-                    DropdownMenuItem(
-                      value: 'Professional',
-                      child: Text('Professional'),
-                    ),
-                    DropdownMenuItem(value: 'Fresher', child: Text('Fresher')),
-                    DropdownMenuItem(
-                      value: 'Experienced',
-                      child: Text('Experienced'),
-                    ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isNarrow = constraints.maxWidth < 450;
+              final dropdown1 = AppDropdown<String>(
+                label: 'Category',
+                value: _category,
+                items: const [
+                  DropdownMenuItem(value: 'Classic', child: Text('Classic')),
+                  DropdownMenuItem(
+                    value: 'Professional',
+                    child: Text('Professional'),
+                  ),
+                  DropdownMenuItem(value: 'Fresher', child: Text('Fresher')),
+                  DropdownMenuItem(
+                    value: 'Experienced',
+                    child: Text('Experienced'),
+                  ),
+                ],
+                onChanged: (v) => setState(() => _category = v ?? 'Classic'),
+              );
+              final dropdown2 = AppDropdown<String>(
+                label: 'Status',
+                value: _status,
+                items: const [
+                  DropdownMenuItem(value: 'Active', child: Text('Active')),
+                  DropdownMenuItem(
+                    value: 'Inactive',
+                    child: Text('Inactive'),
+                  ),
+                ],
+                onChanged: (v) => setState(() => _status = v ?? 'Active'),
+              );
+
+              if (isNarrow) {
+                return Column(
+                  children: [
+                    dropdown1,
+                    const SizedBox(height: 16),
+                    dropdown2,
                   ],
-                  onChanged: (v) => setState(() => _category = v ?? 'Classic'),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: AppDropdown<String>(
-                  label: 'Status',
-                  value: _status,
-                  items: const [
-                    DropdownMenuItem(value: 'Active', child: Text('Active')),
-                    DropdownMenuItem(
-                      value: 'Inactive',
-                      child: Text('Inactive'),
-                    ),
-                  ],
-                  onChanged: (v) => setState(() => _status = v ?? 'Active'),
-                ),
-              ),
-            ],
+                );
+              }
+              return Row(
+                children: [
+                  Expanded(child: dropdown1),
+                  const SizedBox(width: 16),
+                  Expanded(child: dropdown2),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 16),
           AppTextField(
             label: 'Accent Color Hex',
             hintText: '#4F46E5',
             controller: _colorController,
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.palette_outlined,
               size: 20,
-              color: AppColors.textSecondaryLight,
+              color: AppColors.textSecondary(context),
             ),
           ),
           const SizedBox(height: 24),

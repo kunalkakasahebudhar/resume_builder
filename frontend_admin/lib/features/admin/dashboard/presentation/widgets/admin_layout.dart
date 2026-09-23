@@ -37,7 +37,7 @@ class _AdminLayoutState extends State<AdminLayout> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: isMobile
           ? Drawer(
               backgroundColor: AppColors.sidebarBackground,

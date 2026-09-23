@@ -192,50 +192,56 @@ class LandingComparisonSection extends StatelessWidget {
                                 ),
                               ),
                               DataCell(
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.check_circle_rounded,
-                                      color: Color(0xFF10B981),
-                                      size: 16,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        item.resumeForge,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          color: isDark
-                                              ? const Color(0xFFE2E8F0)
-                                              : const Color(0xFF1E293B),
+                                SizedBox(
+                                  width: 300,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle_rounded,
+                                        color: Color(0xFF10B981),
+                                        size: 16,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          item.resumeForge,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: isDark
+                                                ? const Color(0xFFE2E8F0)
+                                                : const Color(0xFF1E293B),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               DataCell(
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.cancel_rounded,
-                                      color: Color(0xFFEF4444),
-                                      size: 16,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        item.traditional,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: isDark
-                                              ? const Color(0xFF94A3B8)
-                                              : const Color(0xFF64748B),
+                                SizedBox(
+                                  width: 300,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.cancel_rounded,
+                                        color: Color(0xFFEF4444),
+                                        size: 16,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          item.traditional,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: isDark
+                                                ? const Color(0xFF94A3B8)
+                                                : const Color(0xFF64748B),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

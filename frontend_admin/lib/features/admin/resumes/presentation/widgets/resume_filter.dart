@@ -52,7 +52,7 @@ class ResumeFilter extends StatelessWidget {
             ),
           ],
         ),
-        Container(width: 1, height: 24, color: AppColors.borderLight),
+        Container(width: 1, height: 24, color: AppColors.border(context)),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

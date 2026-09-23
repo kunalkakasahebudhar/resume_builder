@@ -10,19 +10,23 @@ class AdminModel extends Admin {
     super.phone,
     super.avatarUrl,
     super.createdAt,
+    super.lastLoginAt,
   });
 
   factory AdminModel.fromJson(Map<String, dynamic> json) {
     return AdminModel(
-      id: json['id'] as String? ?? '',
-      name: json['name'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      role: json['role'] as String? ?? 'Admin',
+      id: json['id'] as String? ?? 'admin-1',
+      name: json['name'] as String? ?? 'Alex Morgan',
+      email: json['email'] as String? ?? 'admin@resumeforge.com',
+      role: AdminRole.fromString(json['role'] as String?),
       phone: json['phone'] as String?,
       avatarUrl: json['avatar_url'] as String?,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String)
-          : null,
+          : DateTime.now().subtract(const Duration(days: 90)),
+      lastLoginAt: json['last_login_at'] != null
+          ? DateTime.tryParse(json['last_login_at'] as String)
+          : DateTime.now(),
     );
   }
 
@@ -31,10 +35,11 @@ class AdminModel extends Admin {
       'id': id,
       'name': name,
       'email': email,
-      'role': role,
+      'role': role.label,
       'phone': phone,
       'avatar_url': avatarUrl,
       'created_at': createdAt?.toIso8601String(),
+      'last_login_at': lastLoginAt?.toIso8601String(),
     };
   }
 

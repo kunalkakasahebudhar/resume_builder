@@ -75,7 +75,7 @@ class TemplatesPage extends ConsumerWidget {
                                 crossAxisCount: count,
                                 crossAxisSpacing: 20,
                                 mainAxisSpacing: 20,
-                                mainAxisExtent: 380,
+                                mainAxisExtent: 410,
                               ),
                           itemCount: state.templates.length,
                           itemBuilder: (context, index) {

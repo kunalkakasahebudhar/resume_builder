@@ -228,9 +228,12 @@ class UserDashboardPage extends ConsumerWidget {
                         LayoutBuilder(
                           builder: (context, constraints) {
                             final isDesktop = constraints.maxWidth > 800;
+                            final isMobileSingle = constraints.maxWidth < 460;
                             final toolCardWidth = isDesktop
                                 ? (constraints.maxWidth - 36) / 4
-                                : (constraints.maxWidth - 12) / 2;
+                                : isMobileSingle
+                                    ? constraints.maxWidth
+                                    : (constraints.maxWidth - 12) / 2;
 
                             return Wrap(
                               spacing: 12,

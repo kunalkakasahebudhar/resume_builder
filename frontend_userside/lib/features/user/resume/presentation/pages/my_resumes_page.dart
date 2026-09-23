@@ -316,7 +316,7 @@ class _MyResumesPageState extends ConsumerState<MyResumesPage> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 380,
-                            mainAxisExtent: 210,
+                            mainAxisExtent: 245,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                           ),

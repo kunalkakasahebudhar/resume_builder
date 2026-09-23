@@ -24,14 +24,14 @@ class TemplatePreview extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.surface(context),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-        border: const Border(bottom: BorderSide(color: AppColors.borderLight)),
+        border: Border(bottom: BorderSide(color: AppColors.border(context))),
       ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.card(context),
           borderRadius: BorderRadius.circular(6),
           boxShadow: [
             BoxShadow(
@@ -73,13 +73,13 @@ class TemplatePreview extends StatelessWidget {
                       Container(
                         width: 90,
                         height: 8,
-                        color: AppColors.textPrimaryLight,
+                        color: AppColors.textPrimary(context),
                       ),
                       const SizedBox(height: 4),
                       Container(
                         width: 60,
                         height: 5,
-                        color: AppColors.textMutedLight,
+                        color: AppColors.textMuted(context),
                       ),
                     ],
                   ),
@@ -103,13 +103,13 @@ class TemplatePreview extends StatelessWidget {
                       Container(
                         width: 100,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                       const SizedBox(height: 3),
                       Container(
                         width: 85,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                       const SizedBox(height: 8),
                       Container(width: 45, height: 6, color: accentColor),
@@ -117,7 +117,7 @@ class TemplatePreview extends StatelessWidget {
                       Container(
                         width: 95,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                     ],
                   ),
@@ -133,13 +133,13 @@ class TemplatePreview extends StatelessWidget {
                       Container(
                         width: 45,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                       const SizedBox(height: 3),
                       Container(
                         width: 40,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                       const SizedBox(height: 8),
                       Container(width: 30, height: 6, color: accentColor),
@@ -147,7 +147,7 @@ class TemplatePreview extends StatelessWidget {
                       Container(
                         width: 35,
                         height: 4,
-                        color: AppColors.borderLight,
+                        color: AppColors.border(context),
                       ),
                     ],
                   ),

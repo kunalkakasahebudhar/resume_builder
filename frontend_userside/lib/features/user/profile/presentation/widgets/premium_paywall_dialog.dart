@@ -441,39 +441,61 @@ class _PremiumPaywallDialogState extends ConsumerState<PremiumPaywallDialog> {
                   ),
                 ),
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _selectedPlanIndex == 1 ? '₹499 One-time' : '₹199 / month',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: isDark ? Colors.white : const Color(0xFF0F172A),
-                          ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isNarrow = constraints.maxWidth < 400;
+
+                  final priceSection = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _selectedPlanIndex == 1 ? '₹499 One-time' : '₹199 / month',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: isDark ? Colors.white : const Color(0xFF0F172A),
                         ),
-                        const Text(
-                          'Instant Access • 100% Satisfaction',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF10B981),
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      const Text(
+                        'Instant Access • 100% Satisfaction',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Color(0xFF10B981),
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
-                    ),
-                  ),
-                  AppButton(
+                      ),
+                    ],
+                  );
+
+                  final ctaButton = AppButton(
                     text: 'Unlock Premium Now',
                     icon: Icons.bolt_rounded,
+                    isFullWidth: isNarrow,
                     isLoading: _isUpgrading,
                     onPressed: _handleUpgrade,
-                  ),
-                ],
+                  );
+
+                  if (isNarrow) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        priceSection,
+                        const SizedBox(height: 12),
+                        ctaButton,
+                      ],
+                    );
+                  }
+
+                  return Row(
+                    children: [
+                      Expanded(child: priceSection),
+                      const SizedBox(width: 12),
+                      ctaButton,
+                    ],
+                  );
+                },
               ),
             ),
           ],

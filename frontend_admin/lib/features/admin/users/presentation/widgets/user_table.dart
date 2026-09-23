@@ -43,6 +43,8 @@ class UserTable extends StatelessWidget {
       );
     }
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -51,7 +53,7 @@ class UserTable extends StatelessWidget {
             constraints: BoxConstraints(minWidth: constraints.maxWidth),
             child: DataTable(
               headingRowColor: WidgetStateProperty.all(
-                AppColors.backgroundLight,
+                isDark ? AppColors.surfaceDark : AppColors.backgroundLight,
               ),
               horizontalMargin: 20,
               columnSpacing: 28,
@@ -73,13 +75,17 @@ class UserTable extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 16,
-                            backgroundColor: AppColors.primaryContainer,
+                            backgroundColor: isDark
+                                ? const Color(0xFF312E81)
+                                : AppColors.primaryContainer,
                             child: Text(
                               user.name.isNotEmpty
                                   ? user.name[0].toUpperCase()
                                   : 'U',
                               style: AppTextStyles.titleSmall(
-                                color: AppColors.primary,
+                                color: isDark
+                                    ? AppColors.primaryLight
+                                    : AppColors.primary,
                               ),
                             ),
                           ),
@@ -98,12 +104,18 @@ class UserTable extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryContainer,
+                          color: isDark
+                              ? const Color(0xFF312E81)
+                              : AppColors.primaryContainer,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           '${user.resumesCount} resumes',
-                          style: AppTextStyles.badge(color: AppColors.primary),
+                          style: AppTextStyles.badge(
+                            color: isDark
+                                ? AppColors.primaryLight
+                                : AppColors.primary,
+                          ),
                         ),
                       ),
                     ),
@@ -135,5 +147,6 @@ class UserTable extends StatelessWidget {
         );
       },
     );
+
   }
 }

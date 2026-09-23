@@ -292,8 +292,11 @@ Requirements:
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 12,
+                              runSpacing: 10,
                               children: [
                                 Text(
                                   'Analyzing against: "${activeResume.title}"',
@@ -332,10 +335,11 @@ Requirements:
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.4)),
                           ),
-                          child: Row(
-                            children: [
-                              // Circular Match Meter
-                              Container(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final isNarrow = constraints.maxWidth < 560;
+
+                              final meter = Container(
                                 width: 90,
                                 height: 90,
                                 decoration: BoxDecoration(
@@ -375,57 +379,75 @@ Requirements:
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 24),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          _matchScore >= 80
-                                              ? '🔥 High Interview Probability!'
-                                              : '⚡ Moderate Match — Needs Keywords',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w800,
-                                            color: isDark ? Colors.white : const Color(0xFF0F172A),
-                                          ),
+                              );
+
+                              final details = Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Wrap(
+                                    spacing: 8,
+                                    runSpacing: 6,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    children: [
+                                      Text(
+                                        _matchScore >= 80
+                                            ? '🔥 High Interview Probability!'
+                                            : '⚡ Moderate Match — Needs Keywords',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDark ? Colors.white : const Color(0xFF0F172A),
                                         ),
-                                        const SizedBox(width: 8),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFF10B981).withValues(alpha: 0.15),
-                                            borderRadius: BorderRadius.circular(6),
-                                          ),
-                                          child: Text(
-                                            '${_matchedSkills.length} Matched / ${_missingSkills.length} Missing',
-                                            style: const TextStyle(
-                                              color: Color(0xFF059669),
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      _matchScore >= 80
-                                          ? 'Your resume strongly satisfies the primary requirements for ${_jobTitleController.text} at ${_companyController.text}. Adding the remaining missing keywords will push you into the top 1% candidate pool.'
-                                          : 'ATS scanners for ${_companyController.text} filter for exact keyword matches. Click "Add to Resume" below to add missing skills with 1 click.',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
-                                        height: 1.4,
                                       ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          '${_matchedSkills.length} Matched / ${_missingSkills.length} Missing',
+                                          style: const TextStyle(
+                                            color: Color(0xFF059669),
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    _matchScore >= 80
+                                        ? 'Your resume strongly satisfies the primary requirements for ${_jobTitleController.text} at ${_companyController.text}. Adding the remaining missing keywords will push you into the top 1% candidate pool.'
+                                        : 'ATS scanners for ${_companyController.text} filter for exact keyword matches. Click "Add to Resume" below to add missing skills with 1 click.',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                                      height: 1.4,
                                     ),
+                                  ),
+                                ],
+                              );
+
+                              if (isNarrow) {
+                                return Column(
+                                  children: [
+                                    Center(child: meter),
+                                    const SizedBox(height: 16),
+                                    details,
                                   ],
-                                ),
-                              ),
-                            ],
+                                );
+                              }
+
+                              return Row(
+                                children: [
+                                  meter,
+                                  const SizedBox(width: 24),
+                                  Expanded(child: details),
+                                ],
+                              );
+                            },
                           ),
                         ),
 

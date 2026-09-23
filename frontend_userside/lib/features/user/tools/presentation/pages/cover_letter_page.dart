@@ -260,23 +260,20 @@ $name''';
                               spacing: 16,
                               runSpacing: 12,
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 8,
+                                  runSpacing: 6,
                                   children: [
                                     const Text('Tone:', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
-                                    const SizedBox(width: 10),
-                                    Wrap(
-                                      spacing: 8,
-                                      runSpacing: 6,
-                                      children: _tones.map((tone) {
-                                        final isSelected = _selectedTone == tone;
-                                        return ChoiceChip(
-                                          label: Text(tone),
-                                          selected: isSelected,
-                                          onSelected: (_) => setState(() => _selectedTone = tone),
-                                        );
-                                      }).toList(),
-                                    ),
+                                    ..._tones.map((tone) {
+                                      final isSelected = _selectedTone == tone;
+                                      return ChoiceChip(
+                                        label: Text(tone),
+                                        selected: isSelected,
+                                        onSelected: (_) => setState(() => _selectedTone = tone),
+                                      );
+                                    }),
                                   ],
                                 ),
                                 AppButton(
@@ -299,8 +296,9 @@ $name''';
                         // Letter A4 Paper View
                         Center(
                           child: Container(
-                            width: 760,
-                            padding: const EdgeInsets.all(48),
+                            constraints: const BoxConstraints(maxWidth: 760),
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),

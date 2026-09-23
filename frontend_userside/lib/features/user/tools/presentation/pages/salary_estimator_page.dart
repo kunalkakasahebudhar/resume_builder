@@ -218,86 +218,99 @@ class _SalaryEstimatorPageState extends ConsumerState<SalaryEstimatorPage> {
                       const SizedBox(height: 24),
 
                       // Salary Results Cards
-                      Row(
-                        children: [
-                          // Base Median
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: isDark ? const Color(0xFF1E293B) : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('MEDIAN MARKET BASE',
-                                      style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF64748B))),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    '${isRemote ? '\$' : '₹'}$baseMin - $baseMax $unit',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900,
-                                      color: isDark ? Colors.white : const Color(0xFF0F172A),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  const Text('50th Percentile Market Benchmark', style: TextStyle(fontSize: 11, color: Color(0xFF10B981))),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isWide = constraints.maxWidth > 600;
 
-                          // Top Tier / Product Company
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF1E1B4B), Color(0xFF312E81)],
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: const Color(0xFF6366F1)),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text('TOP 10% / TIER-1 TECH',
-                                          style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFFCBD5E1))),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
-                                          borderRadius: BorderRadius.circular(4),
-                                        ),
-                                        child: const Text('🔥 HIGH ALPHA', style: TextStyle(color: Color(0xFFFBBF24), fontSize: 9, fontWeight: FontWeight.w800)),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    '${isRemote ? '\$' : '₹'}$top10+ $unit',
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  const Text('FAANG & Top Product Startups', style: TextStyle(fontSize: 11, color: Color(0xFF93C5FD))),
-                                ],
+                          final medianCard = Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
                               ),
                             ),
-                          ),
-                        ],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('MEDIAN MARKET BASE',
+                                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFF64748B))),
+                                const SizedBox(height: 6),
+                                Text(
+                                  '${isRemote ? '\$' : '₹'}$baseMin - $baseMax $unit',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text('50th Percentile Market Benchmark', style: TextStyle(fontSize: 11, color: Color(0xFF10B981))),
+                              ],
+                            ),
+                          );
+
+                          final top10Card = Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF1E1B4B), Color(0xFF312E81)],
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFF6366F1)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('TOP 10% / TIER-1 TECH',
+                                        style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800, color: Color(0xFFCBD5E1))),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text('🔥 HIGH ALPHA', style: TextStyle(color: Color(0xFFFBBF24), fontSize: 9, fontWeight: FontWeight.w800)),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  '${isRemote ? '\$' : '₹'}$top10+ $unit',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                const Text('FAANG & Top Product Startups', style: TextStyle(fontSize: 11, color: Color(0xFF93C5FD))),
+                              ],
+                            ),
+                          );
+
+                          if (isWide) {
+                            return Row(
+                              children: [
+                                Expanded(child: medianCard),
+                                const SizedBox(width: 16),
+                                Expanded(child: top10Card),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                medianCard,
+                                const SizedBox(height: 14),
+                                top10Card,
+                              ],
+                            );
+                          }
+                        },
                       ),
 
                       const SizedBox(height: 24),
@@ -319,12 +332,14 @@ class _SalaryEstimatorPageState extends ConsumerState<SalaryEstimatorPage> {
                               children: [
                                 const Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 20),
                                 const SizedBox(width: 8),
-                                Text(
-                                  'High-Paying Skills That Boost Your Compensation by +30%',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                                Expanded(
+                                  child: Text(
+                                    'High-Paying Skills That Boost Your Compensation by +30%',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: isDark ? Colors.white : const Color(0xFF0F172A),
+                                    ),
                                   ),
                                 ),
                               ],

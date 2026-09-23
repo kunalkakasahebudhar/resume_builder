@@ -1,128 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:frontend_admin/app/theme/app_colors.dart';
 import 'package:frontend_admin/app/theme/app_text_styles.dart';
+import 'package:frontend_admin/core/widgets/app_badge.dart';
+import 'package:frontend_admin/core/widgets/app_card.dart';
+import 'package:frontend_admin/features/admin/ai_ops/presentation/providers/ai_ops_provider.dart';
+import 'package:frontend_admin/features/admin/audit_logs/presentation/providers/audit_logs_provider.dart';
+import 'package:frontend_admin/features/admin/auth/presentation/providers/admin_auth_provider.dart';
+import 'package:frontend_admin/features/admin/billing/presentation/providers/billing_admin_provider.dart';
 import 'package:frontend_admin/features/admin/dashboard/presentation/widgets/admin_layout.dart';
 import 'package:frontend_admin/features/admin/dashboard/presentation/widgets/admin_stat_card.dart';
-import 'package:frontend_admin/features/admin/dashboard/presentation/widgets/recent_activity_card.dart';
+import 'package:frontend_admin/features/admin/moderation/presentation/providers/moderation_provider.dart';
+import 'package:frontend_admin/features/admin/users/presentation/providers/admin_users_provider.dart';
 
-class AdminDashboardPage extends StatelessWidget {
+class AdminDashboardPage extends ConsumerWidget {
   const AdminDashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Mock Statistics
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(adminAuthProvider);
+    final currentAdmin = authState.admin;
+    final adminName = currentAdmin?.name ?? 'Admin';
+    final roleName = currentAdmin?.role.displayName ?? 'Super Admin';
+
+    final usersState = ref.watch(adminUsersProvider);
+    final billingState = ref.watch(billingAdminProvider);
+    final modState = ref.watch(moderationProvider);
+    final aiState = ref.watch(aiOpsProvider);
+    final auditState = ref.watch(auditLogsProvider);
+
     final stats = [
       {
-        'title': 'Total Users',
-        'value': '1,248',
-        'subtitle': 'from last month',
-        'trend': '+12.4%',
-        'icon': Icons.people_outline_rounded,
+        'title': 'Monthly Recurring Rev',
+        'value': '₹${NumberFormat('#,##,###').format(billingState.mrr.toInt())}',
+        'subtitle': '498 active Pro subscribers',
+        'trend': '+14.2%',
+        'icon': Icons.currency_rupee_rounded,
         'iconColor': AppColors.primary,
         'iconBgColor': AppColors.primaryContainer,
       },
       {
-        'title': 'Active Users',
-        'value': '1,084',
-        'subtitle': '86.8% active rate',
-        'trend': '+8.1%',
-        'icon': Icons.person_pin_circle_outlined,
+        'title': 'Total Job Seekers',
+        'value': '${usersState.users.length}',
+        'subtitle': '86.8% active retention',
+        'trend': '+12.4%',
+        'icon': Icons.people_outline_rounded,
         'iconColor': AppColors.success,
         'iconBgColor': AppColors.successLight,
       },
       {
-        'title': 'Total Resumes',
-        'value': '3,412',
-        'subtitle': '2.7 avg / user',
+        'title': 'AI Invocations (24h)',
+        'value': NumberFormat('#,##,###').format(aiState.totalCalls24h),
+        'subtitle': '${aiState.avgLatencyTotal.toInt()}ms avg latency',
         'trend': '+18.5%',
-        'icon': Icons.description_outlined,
-        'iconColor': AppColors.secondary,
+        'icon': Icons.auto_awesome_rounded,
+        'iconColor': const Color(0xFF0284C7),
         'iconBgColor': const Color(0xFFE0F2FE),
       },
       {
-        'title': 'Resumes Today',
-        'value': '78',
-        'subtitle': 'vs yesterday (62)',
-        'trend': '+25.8%',
-        'icon': Icons.today_outlined,
-        'iconColor': AppColors.accent,
-        'iconBgColor': const Color(0xFFF3E8FF),
+        'title': 'Pending Moderation',
+        'value': '${modState.pendingCount}',
+        'subtitle': 'Shared resume URLs reported',
+        'trend': modState.pendingCount > 0 ? 'Action Req' : 'Clear',
+        'icon': Icons.shield_outlined,
+        'iconColor': modState.pendingCount > 0
+            ? AppColors.warning
+            : AppColors.success,
+        'iconBgColor': modState.pendingCount > 0
+            ? AppColors.warningLight
+            : AppColors.successLight,
       },
       {
         'title': 'Average ATS Score',
-        'value': '84.6',
-        'subtitle': '100-pt Readability',
+        'value': '84.6 / 100',
+        'subtitle': 'PRD transparent rubric',
         'trend': '+3.2%',
         'icon': Icons.analytics_outlined,
         'iconColor': AppColors.warning,
         'iconBgColor': AppColors.warningLight,
       },
       {
-        'title': 'Total Templates',
-        'value': '4',
-        'subtitle': '100% ATS Compliant',
-        'trend': 'Stable',
-        'icon': Icons.dashboard_customize_outlined,
-        'iconColor': AppColors.info,
-        'iconBgColor': AppColors.infoLight,
+        'title': 'Global AI Gateway',
+        'value': aiState.globalAiEnabled ? 'ONLINE' : 'PAUSED',
+        'subtitle': aiState.globalAiEnabled
+            ? '0.14% error rate'
+            : 'Emergency Kill-Switch',
+        'trend': aiState.globalAiEnabled ? 'Healthy' : 'Stopped',
+        'icon': Icons.bolt_rounded,
+        'iconColor':
+            aiState.globalAiEnabled ? AppColors.success : AppColors.error,
+        'iconBgColor': aiState.globalAiEnabled
+            ? AppColors.successLight
+            : AppColors.errorLight,
       },
     ];
 
-    final recentUsers = [
-      {'name': 'Rohan Sharma', 'email': 'rohan.sharma@example.com', 'status': 'Active', 'joined': 'Today, 2:15 PM'},
-      {'name': 'Priya Patel', 'email': 'priya.patel@example.com', 'status': 'Active', 'joined': 'Today, 1:40 PM'},
-      {'name': 'Vikram Singh', 'email': 'vikram.singh@example.com', 'status': 'Inactive', 'joined': 'Yesterday'},
-      {'name': 'Ananya Roy', 'email': 'ananya.roy@example.com', 'status': 'Active', 'joined': 'Sep 16, 2026'},
-      {'name': 'Sameer Joshi', 'email': 'sameer.j@example.com', 'status': 'Active', 'joined': 'Sep 15, 2026'},
-    ];
-
-    final recentResumes = [
-      {'resume': 'Software_Engineer_v2.pdf', 'user': 'Rohan Sharma', 'template': 'ATS Classic', 'atsScore': 92, 'updated': '10m ago'},
-      {'resume': 'Product_Manager_Resume.pdf', 'user': 'Priya Patel', 'template': 'ATS Professional', 'atsScore': 86, 'updated': '35m ago'},
-      {'resume': 'Data_Analyst_Fresher.pdf', 'user': 'Vikram Singh', 'template': 'ATS Fresher', 'atsScore': 58, 'updated': '2h ago'},
-      {'resume': 'DevOps_Architect.pdf', 'user': 'Ananya Roy', 'template': 'ATS Experienced', 'atsScore': 94, 'updated': '4h ago'},
-      {'resume': 'Frontend_Lead.pdf', 'user': 'Sameer Joshi', 'template': 'ATS Professional', 'atsScore': 74, 'updated': '1d ago'},
-    ];
-
     return AdminLayout(
-      title: 'Dashboard Overview',
+      title: 'Command Center Dashboard',
       currentPath: '/admin/dashboard',
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Banner
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.primary, AppColors.primaryDark],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'ResumeForge ATS Metrics & Management',
-                          style: AppTextStyles.h2(color: Colors.white),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'Monitor real-time user registrations, resume generation, and ATS readability health.',
-                          style: AppTextStyles.bodyMedium(color: Colors.white.withValues(alpha: 0.85)),
-                        ),
-                      ],
+            // Welcome Header Card with Quick Action shortcuts
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isWide = constraints.maxWidth > 750;
+                return Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF334155)),
                   ),
-                ],
-              ),
+                  child: Flex(
+                    direction: isWide ? Axis.horizontal : Axis.vertical,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: isWide ? 1 : 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 12,
+                              runSpacing: 8,
+                              children: [
+                                Text(
+                                  'Welcome back, $adminName',
+                                  style: AppTextStyles.h1(color: Colors.white),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withValues(alpha: 0.3),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: AppColors.primaryLight
+                                            .withValues(alpha: 0.5)),
+                                  ),
+                                  child: Text(
+                                    roleName.toUpperCase(),
+                                    style: const TextStyle(
+                                      color: AppColors.primaryLight,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'ResumeForge Operations Hub • Strict Superset Management across all 14 Product Domains',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.7),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: isWide ? 16 : 0, height: isWide ? 0 : 16),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                            ),
+                            icon: const Icon(Icons.auto_awesome, size: 18),
+                            label: const Text('AI Prompt Studio'),
+                            onPressed: () => context.go('/admin/ai-ops'),
+                          ),
+                          OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(color: Color(0xFF475569)),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                            ),
+                            icon: const Icon(Icons.shield_outlined, size: 18),
+                            label: Text('Moderation (${modState.pendingCount})'),
+                            onPressed: () => context.go('/admin/moderation'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 24),
 
@@ -163,41 +244,186 @@ class AdminDashboardPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // ATS Overview Card
-            const AtsOverviewCard(
-              averageScore: 84.6,
-              highScore: 2420,
-              mediumScore: 780,
-              lowScore: 212,
-            ),
-            const SizedBox(height: 24),
-
-            // Recent Tables Layout
+            // Domain Health & Moderation Quick Actions
             LayoutBuilder(
               builder: (context, constraints) {
-                if (constraints.maxWidth >= 1000) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(child: RecentUsersCard(users: recentUsers)),
-                      const SizedBox(width: 20),
-                      Expanded(child: RecentResumesCard(resumes: recentResumes)),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    children: [
-                      RecentUsersCard(users: recentUsers),
-                      const SizedBox(height: 20),
-                      RecentResumesCard(resumes: recentResumes),
-                    ],
-                  );
-                }
+                final isWide = constraints.maxWidth > 900;
+                return Flex(
+                  direction: isWide ? Axis.horizontal : Axis.vertical,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left: Moderation Queue Spotlight
+                    Expanded(
+                      flex: isWide ? 6 : 0,
+                      child: AppCard(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.shield_rounded,
+                                        color: AppColors.warning, size: 22),
+                                    const SizedBox(width: 8),
+                                    Text('Reported Content Moderation',
+                                        style: AppTextStyles.h3()),
+                                  ],
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      context.go('/admin/moderation'),
+                                  child: const Text('View All Queue →'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            if (modState.items.isEmpty)
+                              const Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Text('No flagged content in queue.'),
+                              )
+                            else
+                              ...modState.items.take(3).map((item) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.surface(context),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: AppColors.border(context)),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.resumeTitle,
+                                              style: AppTextStyles.bodyMedium(
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              '${item.userName} • Reason: ${item.reportReason}',
+                                              style: AppTextStyles.caption(
+                                                  color: AppColors
+                                                      .textSecondaryLight),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      _buildModBadge(item.status),
+                                    ],
+                                  ),
+                                );
+                              }),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: isWide ? 20 : 0, height: isWide ? 0 : 20),
+
+                    // Right: Live Security Audit Trail Stream
+                    Expanded(
+                      flex: isWide ? 5 : 0,
+                      child: AppCard(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.history_edu_rounded,
+                                        color: AppColors.primary, size: 22),
+                                    const SizedBox(width: 8),
+                                    Text('Live Audit Trail',
+                                        style: AppTextStyles.h3()),
+                                  ],
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      context.go('/admin/audit-logs'),
+                                  child: const Text('Full Audit Log →'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            ...auditState.logs.take(4).map((log) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 8,
+                                      height: 8,
+                                      margin: const EdgeInsets.only(
+                                          top: 6, right: 10),
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            log.description,
+                                            style: AppTextStyles.bodySmall(
+                                                fontWeight: FontWeight.w500),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            '${log.actor} • ${DateFormat('HH:mm').format(log.timestamp)}',
+                                            style: AppTextStyles.caption(
+                                                color: AppColors
+                                                    .textSecondaryLight),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildModBadge(String status) {
+    switch (status) {
+      case 'pending':
+        return const AppBadge(
+            text: 'Pending Review', variant: BadgeVariant.warning);
+      case 'quarantined':
+        return const AppBadge(
+            text: 'Quarantined', variant: BadgeVariant.error);
+      default:
+        return AppBadge(text: status);
+    }
   }
 }

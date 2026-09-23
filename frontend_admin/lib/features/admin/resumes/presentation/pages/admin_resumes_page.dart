@@ -28,10 +28,10 @@ class AdminResumesPage extends ConsumerWidget {
             // Filter & Search Controls Card
             Card(
               elevation: 0,
-              color: Colors.white,
+              color: AppColors.card(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: AppColors.borderLight),
+                side: BorderSide(color: AppColors.border(context)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -87,10 +87,10 @@ class AdminResumesPage extends ConsumerWidget {
             Expanded(
               child: Card(
                 elevation: 0,
-                color: Colors.white,
+                color: AppColors.card(context),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: AppColors.borderLight),
+                  side: BorderSide(color: AppColors.border(context)),
                 ),
                 child: resumesState.isLoading
                     ? const AppLoader(message: 'Loading resumes...')

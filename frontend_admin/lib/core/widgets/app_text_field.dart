@@ -50,7 +50,7 @@ class AppTextField extends StatelessWidget {
           maxLines: maxLines,
           readOnly: readOnly,
           onTap: onTap,
-          style: AppTextStyles.bodyMedium(color: AppColors.textPrimaryLight),
+          style: AppTextStyles.bodyMedium(color: AppColors.textPrimary(context)),
           decoration: InputDecoration(
             hintText: hintText,
             prefixIcon: prefixIcon,

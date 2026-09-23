@@ -2,6 +2,7 @@ import 'package:frontend_admin/core/constants/api_constants.dart';
 import 'package:frontend_admin/core/network/api_client.dart';
 import 'package:frontend_admin/core/network/network_exception.dart';
 import 'package:frontend_admin/features/admin/auth/data/models/admin_model.dart';
+import 'package:frontend_admin/features/admin/auth/domain/entities/admin.dart';
 
 abstract class AdminAuthRemoteDataSource {
   Future<AdminModel> login(String email, String password);
@@ -16,7 +17,7 @@ class AdminAuthRemoteDataSourceImpl implements AdminAuthRemoteDataSource {
   @override
   Future<AdminModel> login(String email, String password) async {
     try {
-      // Prepared for future Go + Gin REST API:
+      // Prepared for future REST API:
       final response = await apiClient.post(
         ApiConstants.login,
         data: {'email': email, 'password': password},
@@ -36,10 +37,10 @@ class AdminAuthRemoteDataSourceImpl implements AdminAuthRemoteDataSource {
         ); // Simulate network latency
         return AdminModel(
           id: 'adm_001',
-          name: 'Alex Vance',
+          name: 'Kunal Udhar',
           email: 'admin@resumeforge.com',
-          role: 'Super Admin',
-          phone: '+1 (555) 019-2834',
+          role: AdminRole.superAdmin,
+          phone: '+91 98765 43210',
           avatarUrl:
               'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
           createdAt: DateTime(2025, 1, 15),

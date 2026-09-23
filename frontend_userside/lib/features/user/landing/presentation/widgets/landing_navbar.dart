@@ -33,9 +33,11 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
     final authState = ref.watch(authProvider);
     final themeMode = ref.watch(themeModeProvider);
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 72,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth < 600 ? 12 : 24),
       decoration: BoxDecoration(
         color: isDark
             ? const Color(0xFF0B0F19).withValues(alpha: 0.92)
@@ -64,74 +66,81 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
           child: Row(
             children: [
               // Brand Logo
-              InkWell(
-                onTap: () => context.go('/'),
-                borderRadius: BorderRadius.circular(10),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF4F46E5).withValues(alpha: 0.35),
-                              blurRadius: 10,
-                              offset: const Offset(0, 3),
+              Flexible(
+                child: InkWell(
+                  onTap: () => context.go('/'),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.auto_stories_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        AppConstants.appName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                          color: isDark ? Colors.white : const Color(0xFF0F172A),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xFF4F46E5).withValues(alpha: 0.15),
-                              const Color(0xFF7C3AED).withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF4F46E5).withValues(alpha: 0.35),
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
+                              ),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
+                          child: const Icon(
+                            Icons.auto_stories_rounded,
+                            color: Colors.white,
+                            size: 20,
                           ),
                         ),
-                        child: const Text(
-                          'ATS 2.0',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF6366F1),
-                            letterSpacing: 0.4,
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: Text(
+                            AppConstants.appName,
+                            style: TextStyle(
+                              fontSize: screenWidth < 380 ? 17 : 20,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.5,
+                              color: isDark ? Colors.white : const Color(0xFF0F172A),
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ),
-                    ],
+                        if (screenWidth >= 480) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xFF4F46E5).withValues(alpha: 0.15),
+                                  const Color(0xFF7C3AED).withValues(alpha: 0.15),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: const Text(
+                              'ATS 2.0',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF6366F1),
+                                letterSpacing: 0.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -177,7 +186,7 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
                 },
               ),
 
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
 
               // Theme Switcher
               IconButton(
@@ -202,18 +211,21 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
                 ),
               ),
 
-              const SizedBox(width: 8),
+              const SizedBox(width: 4),
 
               // Auth State Buttons
               if (authState.isAuthenticated) ...[
                 ElevatedButton.icon(
                   onPressed: () => context.go('/dashboard'),
                   icon: const Icon(Icons.dashboard_rounded, size: 16),
-                  label: const Text('Go to Dashboard'),
+                  label: Text(screenWidth < 480 ? 'Dashboard' : 'Go to Dashboard'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4F46E5),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth < 480 ? 12 : 18,
+                      vertical: 12,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -224,12 +236,12 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
                   ),
                 ),
               ] else ...[
-                if (MediaQuery.of(context).size.width > 600)
+                if (screenWidth > 600)
                   TextButton(
                     onPressed: () => context.push('/login'),
                     style: TextButton.styleFrom(
                       foregroundColor: isDark ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       textStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -237,54 +249,56 @@ class LandingNavbar extends ConsumerWidget implements PreferredSizeWidget {
                     ),
                     child: const Text('Sign In'),
                   ),
-                const SizedBox(width: 6),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF4F46E5), Color(0xFF6366F1)],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
+                if (screenWidth > 380) ...[
+                  const SizedBox(width: 4),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF4F46E5), Color(0xFF6366F1)],
                       ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () => context.push('/register'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Get Started Free'),
-                        SizedBox(width: 6),
-                        Icon(Icons.arrow_forward_rounded, size: 15),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
                       ],
                     ),
+                    child: ElevatedButton(
+                      onPressed: () => context.push('/register'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth < 500 ? 12 : 18,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(screenWidth < 500 ? 'Start Free' : 'Get Started Free'),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.arrow_forward_rounded, size: 14),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ],
 
               // Mobile Menu Drawer Button
-              if (MediaQuery.of(context).size.width <= 920) ...[
-                const SizedBox(width: 8),
+              if (screenWidth <= 920) ...[
+                const SizedBox(width: 4),
                 IconButton(
                   icon: const Icon(Icons.menu_rounded),
                   onPressed: onOpenDrawer,

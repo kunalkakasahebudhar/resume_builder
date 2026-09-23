@@ -11,10 +11,10 @@ class CommonWarningsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Colors.white,
+      color: AppColors.card(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: AppColors.borderLight),
+        side: BorderSide(color: AppColors.border(context)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -35,7 +35,7 @@ class CommonWarningsCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               'Most common deductions identified during ATS rule evaluation.',
-              style: AppTextStyles.bodySmall(),
+              style: AppTextStyles.bodySmall(color: AppColors.textSecondary(context)),
             ),
             const SizedBox(height: 16),
             ListView.separated(
@@ -51,7 +51,7 @@ class CommonWarningsCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: AppColors.warningLight,
+                        color: AppColors.warning.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Icon(
@@ -72,7 +72,7 @@ class CommonWarningsCard extends StatelessWidget {
                           const SizedBox(height: 2),
                           Text(
                             w['impact'] as String,
-                            style: AppTextStyles.bodySmall(),
+                            style: AppTextStyles.bodySmall(color: AppColors.textSecondary(context)),
                           ),
                         ],
                       ),
@@ -83,14 +83,14 @@ class CommonWarningsCard extends StatelessWidget {
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.backgroundLight,
+                        color: AppColors.surface(context),
                         borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: AppColors.borderLight),
+                        border: Border.all(color: AppColors.border(context)),
                       ),
                       child: Text(
                         '${w['frequency']}% of resumes',
                         style: AppTextStyles.badge(
-                          color: AppColors.textSecondaryLight,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
                     ),

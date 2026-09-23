@@ -569,7 +569,10 @@ class _ResumeBuilderPageState extends ConsumerState<ResumeBuilderPage> {
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
                       child: Center(
-                        child: ResumeRenderer(resume: resume, scale: 0.55),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: ResumeRenderer(resume: resume, scale: 0.55),
+                        ),
                       ),
                     ),
                   )
